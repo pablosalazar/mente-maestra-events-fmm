@@ -1,0 +1,19 @@
+.btn {
+  color: white;
+  padding: 10px 20px;
+  border: 1px solid #707070;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.btn.btn-primary {
+  background: var(--btn-gradient);
+  font-size: 22px;
+  font-weight: semibold;
+  padding: 10px 80px;
+}
+
+.btn:disabled {
+  background: #707070;
+  cursor: not-allowed;
+}

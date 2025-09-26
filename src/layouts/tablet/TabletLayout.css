@@ -1,0 +1,82 @@
+.tablet-layout {
+  @apply flex items-center justify-center;
+  background-image: url("../../assets/images/app-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.tablet-layout::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 117px;
+  aspect-ratio: 1;
+  background-image: url("../../assets/images/logo_top.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left top;
+}
+
+.tablet-layout::after {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 450px;
+  height: 71px;
+  aspect-ratio: 1;
+  background-image: url("../../assets/images/logos_bottom.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+}
+
+.tablet-layout .player-info {
+  background-color: var(--secondary);
+  padding: 10px 50px;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 700;
+  width: fit-content;
+  border: 3px solid var(--primary);
+  position: absolute;
+  top: 25px;
+  right: 50px;
+}
+
+.tablet-layout .player-info__avatar {
+  position: absolute;
+  top: -20px;
+  right: -40px;
+  border: 3px solid white;
+  border-radius: 50%;
+  background: white;
+  overflow: hidden;
+  margin-left: 10px;
+
+  img {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+.tablet-layout .room-info {
+  position: absolute;
+  text-align: right;
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--dark-blue);
+  text-transform: uppercase;
+  top: 80px;
+  right: 90px;
+}

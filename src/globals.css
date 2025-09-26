@@ -1,0 +1,68 @@
+@import "tailwindcss";
+@import "./assets/css/_variables.css";
+@import "./assets/css/_buttons.css";
+@import "./assets/css/_inputs.css";
+
+body {
+  color: var(--primary);
+  font-family: "Montserrat", "Inter", sans-serif;
+}
+
+.card {
+  background-color: var(--bg-card);
+  padding: 30px;
+  border-radius: 30px;
+}
+
+.form-error {
+  @apply text-sm text-red-500;
+}
+
+.display-panel {
+  font-size: 1.6rem;
+  font-weight: bolder;
+  font-style: italic;
+  background-image: url('./assets/images/panel.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: var(--dark-brown);
+  height: 100px;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  margin: 0 auto;
+  margin-bottom: 25px;
+  padding-top: 22px;
+}
+
+.glass-card {
+  display: block;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50px;
+  backdrop-filter: blur(8px);
+  width: fit-content;
+  padding: 0.750rem 3rem;
+}
+
+.text-brown {
+  color: var(--primary)
+}
+
+.screen-player {
+  background-image: url('./assets/images/screen-bg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 780px;
+  height: 470px;
+  margin: 0 auto;
+}
+
+.button {
+  @apply bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 shadow-sm;
+}
+
+.button-primary {
+  @apply bg-green-600 hover:bg-green-700;
+}

@@ -1,0 +1,13 @@
+:root {
+  --primary: #8C3401;
+  --secondary: #FAB431;
+  --btn-gradient: transparent linear-gradient(180deg, #A96740 0%, #553420 100%) 0% 0% no-repeat padding-box;
+  --bg-card: #fab431;
+  --dark-brown: #593113;
+  --dark-blue: #1E3D8E;
+  --fuchsia: #F12D83;
+
+  /** Font sizes* */
+
+  --fs-normal: 14px;
+}

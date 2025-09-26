@@ -1,0 +1,95 @@
+:root {
+  --border-radius: 10px;
+}
+
+.form-input {
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  width: 100%;
+  border: 2px solid var(--primary)
+}
+
+.form-select .react-select__control {
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  width: 100%;
+  border: none;
+  box-shadow: none;
+  min-height: auto;
+  border: 2px solid var(--primary)
+}
+
+.form-select .react-select__control:hover {
+  box-shadow: none;
+}
+
+.form-select .react-select__control--is-focused {
+  box-shadow: none;
+  outline: none;
+}
+
+.form-select .react-select__value-container {
+  padding: 0;
+}
+
+.form-select .react-select__input-container {
+  margin: 0;
+  padding: 0;
+}
+
+.form-select .react-select__indicator-separator {
+  display: none;
+}
+
+.form-select .react-select__dropdown-indicator {
+  color: #666;
+  padding: 0 8px;
+}
+
+.form-select .react-select__menu {
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-select .react-select__indicator,
+.form-select .react-select__clear-indicator {
+  padding: 0 8px;
+}
+
+/** reset focus behaviors **/
+input:focus {
+  outline: none;
+  box-shadow: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Override appearance for checkboxes to keep their default styling */
+input[type="checkbox"]:focus {
+  -webkit-appearance: checkbox;
+  -moz-appearance: checkbox;
+  appearance: checkbox;
+}
+
+/* Checkbox styling with custom color */
+input[type="checkbox"] {
+  accent-color: var(--primary);
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+input::-ms-clear,
+input::-ms-reveal {
+  display: none;
+}

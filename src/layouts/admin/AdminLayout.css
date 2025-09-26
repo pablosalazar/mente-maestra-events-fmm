@@ -1,0 +1,42 @@
+.admin-layout {
+  @apply flex items-center justify-center;
+  background-image: url("../../assets/images/app-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.admin-layout::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 117px;
+  aspect-ratio: 1;
+  background-image: url("../../assets/images/logo_top.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left top;
+}
+
+.admin-layout::after {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 450px;
+  height: 71px;
+  aspect-ratio: 1;
+  background-image: url("../../assets/images/logos_bottom.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+}
