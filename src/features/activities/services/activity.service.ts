@@ -1,4 +1,11 @@
-import { addDoc, collection, getDocs, query, where, orderBy } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+  orderBy,
+} from "firebase/firestore";
 import type { Activity, ActivityCreate } from "../schemas/activity";
 import { db } from "@/lib/firestore";
 
@@ -39,11 +46,7 @@ export class ActivityService {
   }
 
   static async create(data: ActivityCreate) {
-    console.log("create activity", data);
-    const docRef = await addDoc(collection(db, "activities"), {
-      ...data,
-      createdAt: new Date(),
-    });
+    const docRef = await addDoc(collection(db, "activities"), data);
     return docRef.id;
   }
 

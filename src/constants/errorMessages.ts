@@ -5,4 +5,5 @@ export const errorMessages = {
   acceptTerms: "Acepta la política y autorización de datos personales",
   documentMatch: "Los números de documento no coinciden",
   maxLength: (max: number) => `Máximo ${max} letras/números`,
+  dateFormat: "Formato de fecha inválido",
 };

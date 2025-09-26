@@ -1,11 +1,15 @@
+import { Controller } from "react-hook-form";
 import { useActivityContext } from "../context/ActivityContext";
 
 export function ActivityForm() {
   const { form } = useActivityContext();
   const {
+    watch,
     register,
     formState: { errors },
   } = form;
+
+  console.log(watch());
 
   return (
     <>
@@ -18,7 +22,7 @@ export function ActivityForm() {
           </span>
         </div>
         <div>
-          <label htmlFor="code">Código del evento</label>
+          <label htmlFor="code">Código</label>
           <input id="code" className="form-input" {...register("code")} />
           <span className="form-error">
             {errors.code && <span>{errors.code.message}</span>}
@@ -27,7 +31,26 @@ export function ActivityForm() {
 
         <div>
           <label>Fecha</label>
-          <input type="date" className="form-input" {...register("date")} />
+          <Controller
+            name="date"
+            control={form.control}
+            render={({ field: { value, onChange, ...field } }) => (
+              <input
+                type="date"
+                className="form-input"
+                value={
+                  value instanceof Date && !isNaN(value.getTime())
+                    ? value.toISOString().split("T")[0]
+                    : ""
+                }
+                onChange={(e) => {
+                  const dateValue = e.target.value;
+                  onChange(dateValue ? new Date(dateValue) : null); // or undefined
+                }}
+                {...field}
+              />
+            )}
+          />
           <span className="form-error">
             {errors.date && <span>{errors.date.message}</span>}
           </span>

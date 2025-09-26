@@ -20,7 +20,7 @@ export const ActivityProvider = () => {
     defaultValues: {
       name: "",
       code: "",
-      date: new Date().toISOString().split("T")[0],
+      date: new Date(),
     },
   });
 
