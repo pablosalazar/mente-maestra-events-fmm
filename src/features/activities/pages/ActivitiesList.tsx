@@ -6,6 +6,7 @@ import { useActivityContext } from "../context/ActivityContext";
 import { useActivities, useCreateActivity } from "../hooks/activity-hooks";
 import { Loader } from "@/components/loader/Loader";
 import { toast } from "sonner";
+import { formatDateToSpanishIntl } from "@/utils/date";
 
 export function ActivitiesList() {
   const { isOpen, openModal, closeModal } = useModal();
@@ -46,6 +47,8 @@ export function ActivitiesList() {
     );
   }
 
+  console.log("activities", activities);
+
   return (
     <>
       {isLoading && <Loader message="Cargando eventos..." />}
@@ -69,7 +72,7 @@ export function ActivitiesList() {
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       <div className="flex items-center">
-                        <Hash className="w-4 h-4 mr-1" />
+                        <Hash size={14} className="mr-1" />
                         Código
                       </div>
                     </th>
@@ -78,7 +81,7 @@ export function ActivitiesList() {
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       <div className="flex items-center">
-                        <Calendar className="w-4 h-4 mr-1" />
+                        <Calendar size={14} className="mr-1" />
                         Fecha
                       </div>
                     </th>
@@ -107,11 +110,7 @@ export function ActivitiesList() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">
-                          {new Date(activity.date).toLocaleDateString("es-ES", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })}
+                          {formatDateToSpanishIntl(activity.date)}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
