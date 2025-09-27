@@ -16,7 +16,7 @@ import { formatDateToSpanishIntl } from "@/utils/date";
 import { useState } from "react";
 import type { Activity } from "../schemas/activity";
 import { useSettings } from "@/hooks/useSettings";
-import { GameSettingsService } from "@/services/gameSettings";
+import { SettingsService } from "@/features/settings/services/settings.service";
 
 export function ActivitiesList() {
   const { isOpen, openModal, closeModal } = useModal();
@@ -74,7 +74,7 @@ export function ActivitiesList() {
     }
 
     try {
-      await GameSettingsService.setCode(newCode);
+      await SettingsService.setCode(newCode);
       toast.success("Código de actividad actualizado con éxito");
       refreshSettings();
     } catch (error) {

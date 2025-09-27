@@ -1,7 +1,8 @@
 import { createContext, useEffect, useState } from "react";
-import { GameSettingsService } from "@/services/gameSettings";
+
 import type { GameSettings } from "@/types";
 import { Loader } from "@/components/loader/Loader";
+import { SettingsService } from "../services/settings.service";
 
 interface SettingsContextType {
   settings: GameSettings;
@@ -21,7 +22,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     try {
       setIsLoading(true);
       setError(null);
-      const newSettings = await GameSettingsService.get();
+      const newSettings = await SettingsService.get();
       setSettings(newSettings);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error loading settings");
@@ -35,7 +36,6 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     refreshSettings();
   }, []);
 
-  // if (isLoading) return <Loader whiteBackground={true} />;
   if (error) {
     return (
       <div className="error-container">

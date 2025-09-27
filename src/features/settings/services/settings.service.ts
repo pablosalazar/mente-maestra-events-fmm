@@ -2,7 +2,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firestore";
 import type { GameSettings } from "@/types";
 
-export class GameSettingsService {
+export class SettingsService {
   static async get(): Promise<GameSettings> {
     const ref = doc(db, "config", "gameSettings");
     const snap = await getDoc(ref);

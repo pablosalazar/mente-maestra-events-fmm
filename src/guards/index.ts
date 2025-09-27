@@ -1,1 +1,1 @@
-export { AuthGuard, ProtectedRoute, PublicRoute, RoomGuard, ProtectedRoomRoute } from "./AuthGuard";
+export { AuthGuard, ProtectedRoute, PublicRoute } from "./AuthGuard";

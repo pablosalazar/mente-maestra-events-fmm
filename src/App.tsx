@@ -1,12 +1,11 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { GameProvider } from "@/contexts/GameContext";
 import { NetworkProvider } from "@/contexts/NetworkContext";
 import { NetworkStatusIndicator } from "@/components/ui/NetworkStatusIndicator";
 import { RouterProvider } from "react-router";
 import router from "./routes";
-import { SettingsProvider } from "./contexts/SettingsContext";
+import { SettingsProvider } from "./features/settings/context/SettingsContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,9 +35,7 @@ function App() {
       <NetworkProvider>
         <AuthProvider>
           <SettingsProvider>
-            <GameProvider>
-              <AppContent />
-            </GameProvider>
+            <AppContent />
           </SettingsProvider>
         </AuthProvider>
       </NetworkProvider>
