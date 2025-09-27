@@ -5,8 +5,15 @@ import {
   query,
   where,
   orderBy,
+  updateDoc,
+  doc,
+  deleteDoc,
 } from "firebase/firestore";
-import type { Activity, ActivityCreate } from "../schemas/activity";
+import type {
+  Activity,
+  ActivityCreate,
+  ActivityUpdate,
+} from "../schemas/activity";
 import { db } from "@/lib/firestore";
 
 export class ActivityService {
@@ -46,9 +53,20 @@ export class ActivityService {
   }
 
   static async create(data: ActivityCreate) {
+    const existingActivity = await ActivityService.getByCode(data.code);
+    if (existingActivity) {
+      throw new Error("El codígo de la actividad ya existe");
+    }
     const docRef = await addDoc(collection(db, "activities"), data);
     return docRef.id;
   }
 
-  // static async update(data: ActivityUpdate) {}
+  static async update(data: ActivityUpdate) {
+    const { id, ...rest } = data;
+    await updateDoc(doc(db, "activities", id), rest);
+  }
+
+  static async delete(id: string) {
+    await deleteDoc(doc(db, "activities", id));
+  }
 }

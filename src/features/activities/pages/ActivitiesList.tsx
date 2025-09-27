@@ -29,8 +29,10 @@ export function ActivitiesList() {
         await mutateAsync(data);
         form.reset();
         toast.success("Evento guardado con éxito");
-      } catch {
-        toast.error("Error al guardar el evento");
+      } catch (error) {
+        if (error instanceof Error) {
+          toast.error(error.message);
+        }
       }
     }
   };

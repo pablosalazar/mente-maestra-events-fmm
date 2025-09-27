@@ -34,9 +34,6 @@ export const useCreateActivity = () => {
         queryKey: activityKeys.all,
       });
     },
-    onError: (error) => {
-      console.error("Error creating activity:", error);
-    },
   });
 };
 
