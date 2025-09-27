@@ -37,24 +37,28 @@ export const useCreateActivity = () => {
   });
 };
 
-// // Custom hook for form integration with react-hook-form
-// export const useCreateActivityForm = () => {
-//   const createActivity = useCreateActivity();
+export const useUpdateActivity = () => {
+  const queryClient = useQueryClient();
 
-//   const handleSubmit = async (data: ActivityCreate) => {
-//     try {
-//       const result = await createActivity.mutateAsync(data);
-//       return result;
-//     } catch (error) {
-//       throw error; // Re-throw to let the form handle the error
-//     }
-//   };
+  return useMutation({
+    mutationFn: ActivityService.update,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: activityKeys.all,
+      });
+    },
+  });
+};
 
-//   return {
-//     createActivity: handleSubmit,
-//     isLoading: createActivity.isPending,
-//     error: createActivity.error,
-//     isSuccess: createActivity.isSuccess,
-//     reset: createActivity.reset,
-//   };
-// };
+export const useDeleteActivity = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ActivityService.delete,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: activityKeys.all,
+      });
+    },
+  });
+};

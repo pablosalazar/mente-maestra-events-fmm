@@ -8,6 +8,7 @@ import {
   updateDoc,
   doc,
   deleteDoc,
+  Timestamp,
 } from "firebase/firestore";
 import type {
   Activity,
@@ -21,13 +22,18 @@ export class ActivityService {
     try {
       const q = query(collection(db, "activities"), orderBy("date", "desc"));
       const querySnapshot = await getDocs(q);
-      const activities = querySnapshot.docs.map(
-        (doc) =>
-          ({
-            id: doc.id,
-            ...doc.data(),
-          } as Activity)
-      );
+      const activities = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          // Convert Firestore Timestamp to JavaScript Date
+          date:
+            data.date instanceof Timestamp
+              ? data.date.toDate()
+              : new Date(data.date),
+        } as Activity;
+      });
       return activities;
     } catch (error) {
       console.log(error);
@@ -44,11 +50,17 @@ export class ActivityService {
       return null;
     }
 
-    const doc = querySnapshot.docs[0];
+    const docSnapshot = querySnapshot.docs[0];
+    const data = docSnapshot.data();
 
     return {
-      id: doc.id,
-      ...doc.data(),
+      id: docSnapshot.id,
+      ...data,
+      // Convert Firestore Timestamp to JavaScript Date
+      date:
+        data.date instanceof Timestamp
+          ? data.date.toDate()
+          : new Date(data.date),
     } as Activity;
   }
 

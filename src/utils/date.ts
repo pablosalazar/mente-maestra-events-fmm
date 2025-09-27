@@ -1,11 +1,7 @@
-import type { Timestamp } from "firebase/firestore";
-
-export function formatDateToSpanishIntl(
-  date: Date | Timestamp | null | undefined
-): string {
+export function formatDateToSpanishIntl(date: Date | null | undefined): string {
   if (!date) return "";
 
-  const dateObj = date instanceof Date ? date : new Date(date.toDate());
+  const dateObj = date instanceof Date ? date : new Date(date);
 
   if (isNaN(dateObj.getTime())) return "";
 
