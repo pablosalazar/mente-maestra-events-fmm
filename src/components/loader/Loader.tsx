@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import "./Loader.css";
 
 interface LoaderProps {
@@ -12,9 +13,9 @@ export const Loader = ({
   whiteBackground = false,
 }: LoaderProps) => {
   if (fullscreen) {
-    return (
+    const loaderContent = (
       <div
-        className={`z-50 fullscreen-loader-overlay ${
+        className={`fullscreen-loader-overlay ${
           whiteBackground ? "white-background" : ""
         }`}
       >
@@ -32,6 +33,8 @@ export const Loader = ({
         </div>
       </div>
     );
+
+    return createPortal(loaderContent, document.body);
   }
 
   return (

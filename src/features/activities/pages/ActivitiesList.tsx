@@ -115,7 +115,6 @@ export function ActivitiesList() {
 
     if (isValid) {
       const data = form.getValues();
-      closeModal();
 
       try {
         if (isEditMode && editingActivity) {
@@ -130,6 +129,7 @@ export function ActivitiesList() {
         }
         form.reset();
         setEditingActivity(null);
+        closeModal();
       } catch (error) {
         if (error instanceof Error) {
           toast.error(error.message);
@@ -162,6 +162,7 @@ export function ActivitiesList() {
           }
         />
       )}
+      {isDeleting && <Loader message="Eliminando evento..." />}
       <div className="container mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-lg p-6">
           <div className="flex items-center justify-between mb-6">
@@ -325,10 +326,15 @@ export function ActivitiesList() {
           <button
             onClick={handleCloseModal}
             className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
+            disabled={isCreating || isUpdating}
           >
             Cancelar
           </button>
-          <button onClick={submitForm} className="button button-primary">
+          <button
+            onClick={submitForm}
+            className="button button-primary"
+            disabled={isCreating || isUpdating}
+          >
             {isEditMode ? "Actualizar" : "Registrar"}
           </button>
         </ModalFooter>

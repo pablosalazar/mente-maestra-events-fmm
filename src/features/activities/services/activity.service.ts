@@ -20,7 +20,7 @@ import { db } from "@/lib/firestore";
 export class ActivityService {
   static async getAll(): Promise<Activity[] | null> {
     try {
-      const q = query(collection(db, "activities"), orderBy("date", "desc"));
+      const q = query(collection(db, "activities"), orderBy("code", "asc"));
       const querySnapshot = await getDocs(q);
       const activities = querySnapshot.docs.map((doc) => {
         const data = doc.data();
@@ -67,7 +67,7 @@ export class ActivityService {
   static async create(data: ActivityCreate) {
     const existingActivity = await ActivityService.getByCode(data.code);
     if (existingActivity) {
-      throw new Error("El codígo de la actividad ya existe");
+      throw new Error("El código de la actividad ya existe");
     }
     const docRef = await addDoc(collection(db, "activities"), data);
     return docRef.id;
@@ -75,6 +75,15 @@ export class ActivityService {
 
   static async update(data: ActivityUpdate) {
     const { id, ...rest } = data;
+
+    // If code is being updated, check if it already exists for another activity
+    if (rest.code) {
+      const existingActivity = await ActivityService.getByCode(rest.code);
+      if (existingActivity && existingActivity.id !== id) {
+        throw new Error("El código de la actividad ya existe");
+      }
+    }
+
     await updateDoc(doc(db, "activities", id), rest);
   }
 

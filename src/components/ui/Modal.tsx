@@ -75,7 +75,7 @@ export default function Modal({
 
   const modalContent = (
     <div
-      className="fixed inset-0 z-10 flex items-center justify-center p-4 bg-white/20 backdrop-blur-md"
+      className="fixed inset-0 z-40 flex items-center justify-center p-4 bg-white/20 backdrop-blur-md"
       onClick={handleOverlayClick}
       role="dialog"
       aria-modal="true"
@@ -107,11 +107,11 @@ export default function Modal({
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100/50 rounded-full transition-colors duration-200"
-                aria-label="Close modal"
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+                aria-label="Cerrar modal"
               >
                 <svg
-                  className="w-5 h-5"
+                  className="w-6 h-6"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -129,14 +129,11 @@ export default function Modal({
         )}
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-8rem)]">
-          {children}
-        </div>
+        <div className="flex-1 overflow-y-auto">{children}</div>
       </div>
     </div>
   );
 
-  // Render modal in portal to avoid z-index issues
   return createPortal(modalContent, document.body);
 }
 
@@ -147,7 +144,7 @@ export function ModalBody({
   children: React.ReactNode;
   className?: string;
 }) {
-  return <div className={`mb-6 ${className}`}>{children}</div>;
+  return <div className={`p-6 ${className}`}>{children}</div>;
 }
 
 export function ModalFooter({
@@ -159,7 +156,7 @@ export function ModalFooter({
 }) {
   return (
     <div
-      className={`flex justify-end space-x-3 pt-4 border-t border-gray-200/50 ${className}`}
+      className={`flex gap-3 justify-end px-6 py-4 border-t border-gray-200/50 ${className}`}
     >
       {children}
     </div>
