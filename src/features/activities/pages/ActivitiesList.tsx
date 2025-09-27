@@ -10,19 +10,19 @@ import {
   useUpdateActivity,
   useDeleteActivity,
 } from "../hooks/activity-hooks";
+import { useSetActivityCode } from "@/features/settings/hooks/settings-hooks";
 import { Loader } from "@/components/loader/Loader";
 import { toast } from "sonner";
 import { formatDateToSpanishIntl } from "@/utils/date";
 import { useState } from "react";
 import type { Activity } from "../schemas/activity";
 import { useSettings } from "@/hooks/useSettings";
-import { SettingsService } from "@/features/settings/services/settings.service";
 
 export function ActivitiesList() {
   const { isOpen, openModal, closeModal } = useModal();
   const {
     settings: { activityCode },
-    refreshSettings,
+    refetch: refetchSettings,
   } = useSettings();
   const { form } = useActivityContext();
   const { data: activities, isLoading, error } = useActivities();
@@ -32,6 +32,8 @@ export function ActivitiesList() {
     useUpdateActivity();
   const { mutateAsync: deleteActivity, isPending: isDeleting } =
     useDeleteActivity();
+  const { mutateAsync: setActivityCode, isPending: isUpdatingCode } =
+    useSetActivityCode();
   const [editingActivity, setEditingActivity] = useState<Activity | null>(null);
   const [deletingActivityId, setDeletingActivityId] = useState<string | null>(
     null
@@ -67,16 +69,12 @@ export function ActivitiesList() {
   };
 
   const updateActivityCode = async (code: string) => {
-    let newCode: string | null = null;
-
-    if (code !== activityCode) {
-      newCode = code;
-    }
+    const newCode = code !== activityCode ? code : null;
 
     try {
-      await SettingsService.setCode(newCode);
+      await setActivityCode(newCode);
       toast.success("Código de actividad actualizado con éxito");
-      refreshSettings();
+      refetchSettings();
     } catch (error) {
       if (error instanceof Error) {
         toast.error(
@@ -163,6 +161,7 @@ export function ActivitiesList() {
         />
       )}
       {isDeleting && <Loader message="Eliminando evento..." />}
+      {isUpdatingCode && <Loader message="Actualizando código de actividad..." />}
       <div className="container mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-lg p-6">
           <div className="flex items-center justify-between mb-6">
@@ -235,6 +234,7 @@ export function ActivitiesList() {
                             checked={activityCode === activity.code}
                             onChange={() => updateActivityCode(activity.code)}
                             size="sm"
+                            disabled={isUpdatingCode}
                           />
                           <span
                             className={`text-sm font-medium ${
@@ -255,7 +255,9 @@ export function ActivitiesList() {
                             onClick={() => handleOpenEditModal(activity)}
                             className="text-indigo-600 hover:text-indigo-900 transition-colors disabled:text-indigo-300 disabled:cursor-not-allowed"
                             disabled={
-                              isDeleting || activityCode === activity.code
+                              isDeleting || 
+                              isUpdatingCode || 
+                              activityCode === activity.code
                             }
                           >
                             Editar
@@ -265,6 +267,7 @@ export function ActivitiesList() {
                             disabled={
                               deletingActivityId === activity.id ||
                               isDeleting ||
+                              isUpdatingCode ||
                               activityCode === activity.code
                             }
                             className="text-red-600 hover:text-red-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"

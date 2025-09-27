@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router";
-import { AdminLayout } from "./layouts";
+import { AdminLayout, AuthLayout } from "./layouts";
 
 import { ActivitiesList } from "./features/activities/pages/ActivitiesList";
 import { ActivityProvider } from "./features/activities/context/ActivityContext";
@@ -7,8 +7,13 @@ import RegisterPage from "./features/auth/pages/RegisterPage";
 
 const authRoutes = [
   {
-    path: "/registro",
-    element: <RegisterPage />,
+    element: <AuthLayout />,
+    children: [
+      {
+        path: "/registro",
+        element: <RegisterPage />,
+      },
+    ],
   },
 ];
 
