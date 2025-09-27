@@ -66,9 +66,15 @@ export function ActivitiesList() {
     openModal();
   };
 
-  const updateActivityCode = async (activityCode: string) => {
+  const updateActivityCode = async (code: string) => {
+    let newCode: string | null = null;
+
+    if (code !== activityCode) {
+      newCode = code;
+    }
+
     try {
-      await GameSettingsService.setCode(activityCode);
+      await GameSettingsService.setCode(newCode);
       toast.success("Código de actividad actualizado con éxito");
       refreshSettings();
     } catch (error) {

@@ -14,7 +14,7 @@ export class GameSettingsService {
     return snap.data() as GameSettings;
   }
 
-  static async setCode(activityCode: string) {
+  static async setCode(activityCode: string | null) {
     const ref = doc(db, "config", "gameSettings");
     await updateDoc(ref, { activityCode });
   }
