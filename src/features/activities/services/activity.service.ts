@@ -10,11 +10,7 @@ import {
   deleteDoc,
   Timestamp,
 } from "firebase/firestore";
-import type {
-  Activity,
-  ActivityCreate,
-  ActivityUpdate,
-} from "../schemas/activity";
+import type { Activity, ActivityCreate, ActivityUpdate } from "../types";
 import { db } from "@/lib/firestore";
 
 export class ActivityService {

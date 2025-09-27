@@ -15,7 +15,3 @@ export const activityCreateSchema = activitySchema.omit({ id: true });
 export const activityUpdateSchema = activitySchema.partial().extend({
   id: z.uuid(),
 });
-
-export type Activity = z.infer<typeof activitySchema>;
-export type ActivityCreate = z.infer<typeof activityCreateSchema>;
-export type ActivityUpdate = z.infer<typeof activityUpdateSchema>;

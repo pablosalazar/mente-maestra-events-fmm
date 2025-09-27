@@ -15,7 +15,7 @@ import { Loader } from "@/components/loader/Loader";
 import { toast } from "sonner";
 import { formatDateToSpanishIntl } from "@/utils/date";
 import { useState } from "react";
-import type { Activity } from "../schemas/activity";
+import type { Activity } from "../types";
 import { useSettings } from "@/hooks/useSettings";
 
 export function ActivitiesList() {
@@ -148,8 +148,6 @@ export function ActivitiesList() {
     );
   }
 
-  console.log("activities", activities);
-
   return (
     <>
       {isLoading && <Loader message="Cargando eventos..." />}
@@ -161,7 +159,9 @@ export function ActivitiesList() {
         />
       )}
       {isDeleting && <Loader message="Eliminando evento..." />}
-      {isUpdatingCode && <Loader message="Actualizando código de actividad..." />}
+      {isUpdatingCode && (
+        <Loader message="Actualizando código de actividad..." />
+      )}
       <div className="container mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-lg p-6">
           <div className="flex items-center justify-between mb-6">
@@ -255,8 +255,8 @@ export function ActivitiesList() {
                             onClick={() => handleOpenEditModal(activity)}
                             className="text-indigo-600 hover:text-indigo-900 transition-colors disabled:text-indigo-300 disabled:cursor-not-allowed"
                             disabled={
-                              isDeleting || 
-                              isUpdatingCode || 
+                              isDeleting ||
+                              isUpdatingCode ||
                               activityCode === activity.code
                             }
                           >

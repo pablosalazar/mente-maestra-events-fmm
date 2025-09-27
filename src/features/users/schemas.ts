@@ -1,12 +1,14 @@
 import { z } from "zod";
 import { errorMessages } from "@/constants/errorMessages";
 
-export const userRegisterSchema = z.object({
+export const userSchema = z.object({
+  id: z.uuid(),
   name: z.string().min(1, errorMessages.required),
   documentNumber: z
     .string()
     .min(1, errorMessages.required)
     .refine((val) => !isNaN(Number(val)), errorMessages.numeric),
+  createdAt: z.date(),
 });
 
-export type UserRegister = z.infer<typeof userRegisterSchema>;
+export const userCreateSchema = userSchema.omit({ id: true, createdAt: true });

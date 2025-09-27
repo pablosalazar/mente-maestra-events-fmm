@@ -1,11 +1,17 @@
 import { useSettings } from "@/hooks/useSettings";
 import { RegisterForm } from "../components/forms/RegisterForm";
 import Card from "@/components/ui/Card";
+import { useEffect } from "react";
 
 function RegisterPage() {
   const {
     settings: { activityCode },
+    refetch,
   } = useSettings();
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   return (
     <>

@@ -2,7 +2,7 @@
 import { createContext } from "react";
 import { FormProvider, useForm, type UseFormReturn } from "react-hook-form";
 import { Outlet } from "react-router";
-import { activityCreateSchema, type ActivityCreate } from "../schemas/activity";
+import { activityCreateSchema, type ActivityCreate } from "../schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface ActivityContextType {
