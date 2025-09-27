@@ -9,10 +9,10 @@ const firebaseConfig = {
   apiKey: isBrowser
     ? import.meta.env.VITE_FIREBASE_API_KEY
     : process.env.VITE_FIREBASE_API_KEY,
-  authDomain: "mente-maestra-schools-fmm.firebaseapp.com",
-  projectId: "mente-maestra-schools-fmm",
-  storageBucket: "mente-maestra-schools-fmm.appspot.com",
-  messagingSenderId: "777000608666",
+  // authDomain: "mente-maestra-events-fmm.firebaseapp.com",
+  projectId: "mente-maestra-events-fmm",
+  // storageBucket: "mente-maestra-events-fmm.appspot.com",
+  // messagingSenderId: "512230906077",
   appId: isBrowser
     ? import.meta.env.VITE_FIREBASE_APP_ID
     : process.env.VITE_FIREBASE_APP_ID,

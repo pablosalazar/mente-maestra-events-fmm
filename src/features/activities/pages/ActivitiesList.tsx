@@ -1,24 +1,41 @@
 import { ActivityForm } from "@/features/activities/components/ActivityForm";
 import Modal, { ModalBody, ModalFooter } from "@/components/ui/Modal";
+import Switch from "@/components/ui/Switch";
 import { useModal } from "@/hooks/useModal";
 import { Plus, Calendar, Hash, Trash2 } from "lucide-react";
 import { useActivityContext } from "../context/ActivityContext";
-import { useActivities, useCreateActivity, useUpdateActivity, useDeleteActivity } from "../hooks/activity-hooks";
+import {
+  useActivities,
+  useCreateActivity,
+  useUpdateActivity,
+  useDeleteActivity,
+} from "../hooks/activity-hooks";
 import { Loader } from "@/components/loader/Loader";
 import { toast } from "sonner";
 import { formatDateToSpanishIntl } from "@/utils/date";
 import { useState } from "react";
 import type { Activity } from "../schemas/activity";
+import { useSettings } from "@/hooks/useSettings";
+import { GameSettingsService } from "@/services/gameSettings";
 
 export function ActivitiesList() {
   const { isOpen, openModal, closeModal } = useModal();
+  const {
+    settings: { activityCode },
+    refreshSettings,
+  } = useSettings();
   const { form } = useActivityContext();
   const { data: activities, isLoading, error } = useActivities();
-  const { mutateAsync: createActivity, isPending: isCreating } = useCreateActivity();
-  const { mutateAsync: updateActivity, isPending: isUpdating } = useUpdateActivity();
-  const { mutateAsync: deleteActivity, isPending: isDeleting } = useDeleteActivity();
+  const { mutateAsync: createActivity, isPending: isCreating } =
+    useCreateActivity();
+  const { mutateAsync: updateActivity, isPending: isUpdating } =
+    useUpdateActivity();
+  const { mutateAsync: deleteActivity, isPending: isDeleting } =
+    useDeleteActivity();
   const [editingActivity, setEditingActivity] = useState<Activity | null>(null);
-  const [deletingActivityId, setDeletingActivityId] = useState<string | null>(null);
+  const [deletingActivityId, setDeletingActivityId] = useState<string | null>(
+    null
+  );
 
   const isModalLoading = isCreating || isUpdating;
   const isEditMode = !!editingActivity;
@@ -49,6 +66,22 @@ export function ActivitiesList() {
     openModal();
   };
 
+  const updateActivityCode = async (activityCode: string) => {
+    try {
+      await GameSettingsService.setCode(activityCode);
+      toast.success("Código de actividad actualizado con éxito");
+      refreshSettings();
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(
+          `Error al actualizar el código de actividad: ${error.message}`
+        );
+      } else {
+        toast.error("Error al actualizar el código de actividad");
+      }
+    }
+  };
+
   const handleDeleteActivity = async (activity: Activity) => {
     const confirmDelete = window.confirm(
       `¿Estás seguro de que quieres eliminar el evento "${activity.name}"? Esta acción no se puede deshacer.`
@@ -77,7 +110,7 @@ export function ActivitiesList() {
     if (isValid) {
       const data = form.getValues();
       closeModal();
-      
+
       try {
         if (isEditMode && editingActivity) {
           await updateActivity({
@@ -116,13 +149,22 @@ export function ActivitiesList() {
   return (
     <>
       {isLoading && <Loader message="Cargando eventos..." />}
-      {isModalLoading && <Loader message={isEditMode ? "Actualizando evento..." : "Guardando evento..."} />}
+      {isModalLoading && (
+        <Loader
+          message={
+            isEditMode ? "Actualizando evento..." : "Guardando evento..."
+          }
+        />
+      )}
       <div className="container mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-lg p-6">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-3xl font-bold text-gray-900">Eventos</h1>
 
-            <button onClick={handleOpenCreateModal} className="button button-primary">
+            <button
+              onClick={handleOpenCreateModal}
+              className="button button-primary"
+            >
               <Plus className="w-4 h-4 mr-2" />
               Registrar Evento
             </button>
@@ -148,6 +190,9 @@ export function ActivitiesList() {
                         <Calendar size={14} className="mr-1" />
                         Fecha
                       </div>
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Estado
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Acciones
@@ -177,18 +222,44 @@ export function ActivitiesList() {
                           {formatDateToSpanishIntl(activity.date)}
                         </div>
                       </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center space-x-3">
+                          <Switch
+                            checked={activityCode === activity.code}
+                            onChange={() => updateActivityCode(activity.code)}
+                            size="sm"
+                          />
+                          <span
+                            className={`text-sm font-medium ${
+                              activityCode === activity.code
+                                ? "text-green-700"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            {activityCode === activity.code
+                              ? "Activo"
+                              : "Inactivo"}
+                          </span>
+                        </div>
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex space-x-4">
-                          <button 
+                          <button
                             onClick={() => handleOpenEditModal(activity)}
-                            className="text-indigo-600 hover:text-indigo-900 transition-colors"
-                            disabled={isDeleting}
+                            className="text-indigo-600 hover:text-indigo-900 transition-colors disabled:text-indigo-300 disabled:cursor-not-allowed"
+                            disabled={
+                              isDeleting || activityCode === activity.code
+                            }
                           >
                             Editar
                           </button>
-                          <button 
+                          <button
                             onClick={() => handleDeleteActivity(activity)}
-                            disabled={deletingActivityId === activity.id || isDeleting}
+                            disabled={
+                              deletingActivityId === activity.id ||
+                              isDeleting ||
+                              activityCode === activity.code
+                            }
                             className="text-red-600 hover:text-red-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                           >
                             {deletingActivityId === activity.id ? (

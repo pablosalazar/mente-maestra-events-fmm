@@ -1,14 +1,21 @@
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firestore";
 import type { GameSettings } from "@/types";
 
-export async function getGameSettings(): Promise<GameSettings> {
-  const ref = doc(db, "config", "gameSettings");
-  const snap = await getDoc(ref);
+export class GameSettingsService {
+  static async get(): Promise<GameSettings> {
+    const ref = doc(db, "config", "gameSettings");
+    const snap = await getDoc(ref);
 
-  if (!snap.exists()) {
-    throw new Error("Game settings not found in Firestore");
+    if (!snap.exists()) {
+      throw new Error("Game settings not found in Firestore");
+    }
+
+    return snap.data() as GameSettings;
   }
 
-  return snap.data() as GameSettings;
+  static async setCode(activityCode: string) {
+    const ref = doc(db, "config", "gameSettings");
+    await updateDoc(ref, { activityCode });
+  }
 }
