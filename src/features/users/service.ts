@@ -23,6 +23,7 @@ export class UserService {
         return {
           id: doc.id,
           name: data.name,
+          avatar: data.avatar,
           documentNumber: data.documentNumber,
           createdAt: data.createdAt?.toDate() || new Date(),
         };
@@ -76,6 +77,7 @@ export class UserService {
       return {
         id: docSnap.id,
         name: data.name,
+        avatar: data.avatar,
         documentNumber: data.documentNumber,
         createdAt: data.createdAt?.toDate() || new Date(),
       };
@@ -106,6 +108,7 @@ export class UserService {
       return {
         id: doc.id,
         name: data.name,
+        avatar: data.avatar,
         documentNumber: data.documentNumber,
         createdAt: data.createdAt?.toDate() || new Date(),
       };

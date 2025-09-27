@@ -5,8 +5,10 @@ import { useCreateUser } from "@/features/users/hooks";
 import { Loader } from "@/components/loader/Loader";
 import type { UserCreate } from "@/features/users/types";
 import { userCreateSchema } from "@/features/users/schemas";
+import { useAuth } from "@/hooks/useAuth";
 
 export function RegisterForm() {
+  const { login } = useAuth();
   const {
     register,
     handleSubmit,
@@ -25,6 +27,8 @@ export function RegisterForm() {
       toast.success(
         `¡Bienvenido ${newUser.name}! Te has registrado exitosamente.`
       );
+
+      login(newUser);
 
       // You can redirect or perform other actions here
       console.log("User registered successfully:", newUser);

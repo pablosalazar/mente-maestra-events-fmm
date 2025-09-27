@@ -1,10 +1,10 @@
+import type { User } from "@/features/users/types";
 import { createContext, useState, type ReactNode } from "react";
-import type { UserWithId } from "@/types";
 
 export interface AuthContextType {
-  user: UserWithId | null;
-  setUser: (user: UserWithId | null) => void;
-  login: (user: UserWithId) => void;
+  user: User | null;
+  setUser: (user: User | null) => void;
+  login: (user: User) => void;
   logout: () => void;
   updateAvatar: (avatar: string) => void;
   isAuthenticated: boolean;
@@ -13,7 +13,7 @@ export interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<UserWithId | null>(() => {
+  const [user, setUser] = useState<User | null>(() => {
     try {
       const storedUser = localStorage.getItem("user");
       return storedUser ? JSON.parse(storedUser) : null;
@@ -23,7 +23,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   });
 
-  const login = (userData: UserWithId) => {
+  const login = (userData: User) => {
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
   };
