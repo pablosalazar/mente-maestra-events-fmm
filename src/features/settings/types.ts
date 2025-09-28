@@ -1,5 +1,4 @@
 export type GameSettings = {
-  maxPlayers: number;
   questions: number;
   countdown: number;
   timeLimit: number;
