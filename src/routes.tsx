@@ -3,12 +3,14 @@ import { createBrowserRouter, Navigate } from "react-router";
 import { ActivityProvider } from "./features/activities/context/ActivityContext";
 import { AdminLayout, AuthLayout, AppLayout } from "./layouts";
 import { AuthGuard } from "./guards/AuthGuard";
+import QuestionView from "./features/game/pages/QuestionView";
 
 // Auth
 const RegisterPage = lazy(() => import("./features/auth/pages/RegisterPage"));
 
 // App
 const AvatarSelect = lazy(() => import("./features/users/pages/AvatarSelect"));
+const CountDown = lazy(() => import("./features/game/pages/CountDown"));
 
 // Admin
 const ActivitiesList = lazy(
@@ -37,6 +39,14 @@ const appRoutes = [
           {
             path: "/elige-avatar",
             element: <AvatarSelect />,
+          },
+          {
+            path: "/contador",
+            element: <CountDown />,
+          },
+          {
+            path: "/pregunta",
+            element: <QuestionView />,
           },
         ],
       },

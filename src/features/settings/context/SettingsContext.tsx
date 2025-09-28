@@ -1,4 +1,5 @@
-import { createContext } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useContext } from "react";
 import type { GameSettings } from "@/types";
 import { Loader } from "@/components/loader/Loader";
 import { useGameSettings } from "../hooks/settings-hooks";
@@ -44,3 +45,11 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 
 // Export the context
 export { SettingsContext };
+
+export function useSettings() {
+  const context = useContext(SettingsContext);
+  if (!context) {
+    throw new Error("useSettings must be used within a SettingsProvider");
+  }
+  return context;
+}
