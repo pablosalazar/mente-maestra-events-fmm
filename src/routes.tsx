@@ -4,6 +4,7 @@ import { ActivityProvider } from "./features/activities/context/ActivityContext"
 import { AdminLayout, AuthLayout, AppLayout } from "./layouts";
 import { AuthGuard } from "./guards/AuthGuard";
 import QuestionView from "./features/game/pages/QuestionView";
+import { SessionProvider } from "./contexts/SessionContext";
 
 // Auth
 const RegisterPage = lazy(() => import("./features/auth/pages/RegisterPage"));
@@ -46,7 +47,8 @@ const appRoutes = [
           },
           {
             path: "/pregunta",
-            element: <QuestionView />,
+            element: <SessionProvider />,
+            children: [{ index: true, element: <QuestionView /> }],
           },
         ],
       },

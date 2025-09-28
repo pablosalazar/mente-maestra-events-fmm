@@ -1,11 +1,12 @@
+import { useSettings } from "@/features/settings/context/SettingsContext";
 import { useState, useEffect } from "react";
-import { useSettings } from "@/hooks/useSettings";
 
 interface ProgressBarProps {
   onTimeUp?: () => void;
+  isPaused?: boolean;
 }
 
-export function ProgressBar({ onTimeUp }: ProgressBarProps) {
+export function ProgressBar({ onTimeUp, isPaused = false }: ProgressBarProps) {
   const { settings } = useSettings();
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -13,6 +14,11 @@ export function ProgressBar({ onTimeUp }: ProgressBarProps) {
   const totalTime = settings.timeLimit;
 
   useEffect(() => {
+    // Don't start timer if paused
+    if (isPaused) {
+      return;
+    }
+
     if (timeElapsed >= totalTime) {
       onTimeUp?.();
       return;
@@ -33,7 +39,7 @@ export function ProgressBar({ onTimeUp }: ProgressBarProps) {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeElapsed, onTimeUp, totalTime]);
+  }, [timeElapsed, onTimeUp, totalTime, isPaused]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
