@@ -7,9 +7,10 @@ import {
   where,
   getDocs,
   Timestamp,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "@/lib/firestore";
-import type { User, UserCreate } from "@/features/users/types";
+import type { User, UserCreate, UserUpdate } from "@/features/users/types";
 
 export class UserService {
   private static readonly COLLECTION = "users";
@@ -61,6 +62,48 @@ export class UserService {
         throw error;
       }
       throw new Error("Error al crear el usuario");
+    }
+  }
+
+  static async update(id: string, userData: UserUpdate): Promise<User> {
+    try {
+      // If updating document number, check if it already exists for another user
+      if (userData.documentNumber) {
+        const existingUser = await this.getByDocumentNumber(
+          userData.documentNumber
+        );
+        if (existingUser && existingUser.id !== id) {
+          throw new Error("Ya existe un usuario con este número de documento");
+        }
+      }
+
+      const docRef = doc(db, this.COLLECTION, id);
+
+      // Check if user exists
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists()) {
+        throw new Error("Usuario no encontrado");
+      }
+
+      // Update the document
+      await updateDoc(docRef, userData);
+
+      // Get the updated user
+      const updatedDocSnap = await getDoc(docRef);
+      const data = updatedDocSnap.data()!;
+
+      return {
+        id: updatedDocSnap.id,
+        name: data.name,
+        avatar: data.avatar,
+        documentNumber: data.documentNumber,
+        createdAt: data.createdAt?.toDate() || new Date(),
+      };
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error("Error al actualizar el usuario");
     }
   }
 

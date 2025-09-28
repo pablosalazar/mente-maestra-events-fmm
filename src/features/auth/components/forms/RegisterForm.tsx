@@ -6,9 +6,12 @@ import { Loader } from "@/components/loader/Loader";
 import type { UserCreate } from "@/features/users/types";
 import { userCreateSchema } from "@/features/users/schemas";
 import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router";
 
 export function RegisterForm() {
   const { login } = useAuth();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -24,14 +27,8 @@ export function RegisterForm() {
     try {
       const newUser = await createUser(data);
 
-      toast.success(
-        `¡Bienvenido ${newUser.name}! Te has registrado exitosamente.`
-      );
-
       login(newUser);
-
-      // You can redirect or perform other actions here
-      console.log("User registered successfully:", newUser);
+      navigate("/elige-avatar");
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);

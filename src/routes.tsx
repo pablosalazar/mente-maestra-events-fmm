@@ -1,9 +1,19 @@
+import { lazy } from "react";
 import { createBrowserRouter, Navigate } from "react-router";
-import { AdminLayout, AuthLayout } from "./layouts";
-
-import { ActivitiesList } from "./features/activities/pages/ActivitiesList";
 import { ActivityProvider } from "./features/activities/context/ActivityContext";
-import RegisterPage from "./features/auth/pages/RegisterPage";
+import { AdminLayout, AuthLayout, AppLayout } from "./layouts";
+import { AuthGuard } from "./guards/AuthGuard";
+
+// Auth
+const RegisterPage = lazy(() => import("./features/auth/pages/RegisterPage"));
+
+// App
+const AvatarSelect = lazy(() => import("./features/users/pages/AvatarSelect"));
+
+// Admin
+const ActivitiesList = lazy(
+  () => import("./features/activities/pages/ActivitiesList")
+);
 
 const authRoutes = [
   {
@@ -12,6 +22,23 @@ const authRoutes = [
       {
         path: "/registro",
         element: <RegisterPage />,
+      },
+    ],
+  },
+];
+
+const appRoutes = [
+  {
+    element: <AppLayout />,
+    children: [
+      {
+        element: <AuthGuard />,
+        children: [
+          {
+            path: "/elige-avatar",
+            element: <AvatarSelect />,
+          },
+        ],
       },
     ],
   },
@@ -36,6 +63,7 @@ export const router = createBrowserRouter([
     element: <Navigate to="/registro" replace />,
   },
   ...authRoutes,
+  ...appRoutes,
   ...adminRoutes,
 ]);
 

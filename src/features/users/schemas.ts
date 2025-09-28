@@ -17,3 +17,8 @@ export const userCreateSchema = userSchema.omit({
   avatar: true,
   createdAt: true,
 });
+
+export const userUpdateSchema = userSchema.omit({
+  id: true,
+  createdAt: true,
+}).partial();

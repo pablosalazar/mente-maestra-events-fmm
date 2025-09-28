@@ -18,7 +18,7 @@ import { useState } from "react";
 import type { Activity } from "../types";
 import { useSettings } from "@/hooks/useSettings";
 
-export function ActivitiesList() {
+export default function ActivitiesList() {
   const { isOpen, openModal, closeModal } = useModal();
   const {
     settings: { activityCode },
