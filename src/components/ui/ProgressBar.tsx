@@ -1,5 +1,5 @@
 import { useSettings } from "@/features/settings/context/SettingsContext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface ProgressBarProps {
   onTimeUp?: () => void;
@@ -10,6 +10,7 @@ export function ProgressBar({ onTimeUp, isPaused = false }: ProgressBarProps) {
   const { settings } = useSettings();
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [progress, setProgress] = useState(0);
+  const hasTimeUpBeenCalled = useRef(false);
 
   const totalTime = settings.timeLimit;
 
@@ -19,8 +20,13 @@ export function ProgressBar({ onTimeUp, isPaused = false }: ProgressBarProps) {
       return;
     }
 
-    if (timeElapsed >= totalTime) {
-      onTimeUp?.();
+    // Reset the flag when timer starts fresh
+    if (timeElapsed === 0) {
+      hasTimeUpBeenCalled.current = false;
+    }
+
+    // If time is already up and callback has been called, don't start timer
+    if (timeElapsed >= totalTime && hasTimeUpBeenCalled.current) {
       return;
     }
 
@@ -30,8 +36,13 @@ export function ProgressBar({ onTimeUp, isPaused = false }: ProgressBarProps) {
         const newProgress = (newTime / totalTime) * 100;
         setProgress(Math.min(100, newProgress));
 
-        if (newTime >= totalTime) {
-          onTimeUp?.();
+        // Call onTimeUp only once when time is up, but defer it to avoid setState during render
+        if (newTime >= totalTime && !hasTimeUpBeenCalled.current) {
+          hasTimeUpBeenCalled.current = true;
+          // Use setTimeout to defer the callback until after the current render cycle
+          setTimeout(() => {
+            onTimeUp?.();
+          }, 0);
         }
 
         return Math.min(totalTime, newTime);

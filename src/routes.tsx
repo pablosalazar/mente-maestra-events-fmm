@@ -12,6 +12,7 @@ const RegisterPage = lazy(() => import("./features/auth/pages/RegisterPage"));
 // App
 const AvatarSelect = lazy(() => import("./features/users/pages/AvatarSelect"));
 const CountDown = lazy(() => import("./features/game/pages/CountDown"));
+const Feedback = lazy(() => import("./features/game/pages/Feedback"));
 
 // Admin
 const ActivitiesList = lazy(
@@ -46,9 +47,15 @@ const appRoutes = [
             element: <CountDown />,
           },
           {
-            path: "/pregunta",
+            path: "/",
             element: <SessionProvider />,
-            children: [{ index: true, element: <QuestionView /> }],
+            children: [
+              { path: "/pregunta", element: <QuestionView /> },
+              {
+                path: "feedback",
+                element: <Feedback />,
+              },
+            ],
           },
         ],
       },

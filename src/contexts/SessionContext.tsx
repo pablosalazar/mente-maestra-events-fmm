@@ -5,13 +5,14 @@ import { Outlet } from "react-router";
 import { useSettings } from "@/features/settings/context/SettingsContext";
 import { questionsV1 } from "@/constants/questionV1";
 import { selectRandomItems } from "@/utils/questions";
+import { GameResultsProvider } from "./GameResultsContext";
 
 interface SessionContextType {
   questions: Question[];
-  totalQuestions: number;
   currentQuestionIndex: number;
   currentQuestion: Question | null;
   isSessionActive: boolean;
+  isSessionCompleted: boolean;
   startSession: () => void;
   nextQuestion: () => void;
   resetSession: () => void;
@@ -24,6 +25,7 @@ export function SessionProvider() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isSessionActive, setIsSessionActive] = useState(false);
+  const [isSessionCompleted, setIsSessionCompleted] = useState(false);
 
   const startSession = useCallback(() => {
     const questionCount = settings?.questions || 5;
@@ -31,6 +33,7 @@ export function SessionProvider() {
     setQuestions(selectedQuestions);
     setCurrentQuestionIndex(0);
     setIsSessionActive(true);
+    setIsSessionCompleted(false);
   }, [settings?.questions]);
 
   const nextQuestion = useCallback(() => {
@@ -39,6 +42,7 @@ export function SessionProvider() {
     } else {
       // Session finished
       setIsSessionActive(false);
+      setIsSessionCompleted(true);
     }
   }, [currentQuestionIndex, questions.length]);
 
@@ -46,6 +50,7 @@ export function SessionProvider() {
     setQuestions([]);
     setCurrentQuestionIndex(0);
     setIsSessionActive(false);
+    setIsSessionCompleted(false);
   }, []);
 
   const currentQuestion = questions[currentQuestionIndex] || null;
@@ -55,16 +60,18 @@ export function SessionProvider() {
     currentQuestionIndex,
     currentQuestion,
     isSessionActive,
-    totalQuestions: questions.length,
+    isSessionCompleted,
     startSession,
     nextQuestion,
     resetSession,
   };
 
   return (
-    <SessionContext.Provider value={contextValue}>
-      <Outlet />
-    </SessionContext.Provider>
+    <GameResultsProvider>
+      <SessionContext.Provider value={contextValue}>
+        <Outlet />
+      </SessionContext.Provider>
+    </GameResultsProvider>
   );
 }
 

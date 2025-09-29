@@ -1,6 +1,6 @@
-import { useSettings } from "@/hooks/useSettings";
 import { RegisterForm } from "../components/forms/RegisterForm";
 import Card from "@/components/ui/Card";
+import { useSettings } from "@/features/settings/context/SettingsContext";
 import { useEffect } from "react";
 
 function RegisterPage() {

@@ -3,15 +3,24 @@ import { useEffect, useRef, useState } from "react";
 import questionIcon from "@/assets/images/tv/question-icon.png";
 import clsx from "clsx";
 import { ProgressBar } from "@/components/ui/ProgressBar";
+import { useSettings } from "@/features/settings/context/SettingsContext";
+import { useGameResults } from "@/contexts/GameResultsContext";
+import { useNavigate } from "react-router";
 
 export default function QuestionView() {
+  const navigate = useNavigate();
+  const {
+    settings: { questions },
+  } = useSettings();
+  const { addAnswer } = useGameResults();
+
   const {
     currentQuestion,
-    totalQuestions,
     currentQuestionIndex,
     isSessionActive,
     startSession,
   } = useSession();
+
   const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
   const questionStartTime = useRef<number | null>(null);
   const [responseTimeMs, setResponseTimeMs] = useState<number | null>(null);
@@ -24,16 +33,37 @@ export default function QuestionView() {
     setResponseTimeMs(null);
   }, [isSessionActive, startSession]);
 
-  const handleAnswer = async (letter: string) => {
+  if (!currentQuestion) {
+    return null;
+  }
+
+  const handleAnswer = async (letter: string | null) => {
     const timeMs = questionStartTime.current
       ? Date.now() - questionStartTime.current
       : 0;
     setResponseTimeMs(timeMs);
     setSelectedLetter(letter);
+
+    const isCorrect = currentQuestion.answer === letter;
+    const timeLimit = 20000; // 20 segundos en milisegundos
+    const finalScore = isCorrect ? Math.max(0, timeLimit - timeMs) : 0;
+
+    addAnswer({
+      questionId: currentQuestion.id,
+      selectedAnswer: letter,
+      correctAnswer: currentQuestion.answer,
+      isCorrect,
+      responseTimeMs: timeMs,
+      score: finalScore,
+    });
+
+    setTimeout(() => {
+      navigate("/feedback");
+    }, 3000);
   };
 
   const handleTimeUp = () => {
-    // setSelectedLetter(null);
+    handleAnswer(null);
   };
 
   return (
@@ -41,7 +71,7 @@ export default function QuestionView() {
       {currentQuestion ? (
         <>
           <div className="text-center text-2xl font-bold mb-3 text-gray-700">
-            ({currentQuestionIndex + 1}/{totalQuestions})
+            ({currentQuestionIndex + 1}/{questions})
           </div>
 
           <div className="bg-[var(--secondary)] py-6 px-10 rounded-[20px] border-3 relative ">
