@@ -58,7 +58,11 @@ export default function QuestionView() {
     });
 
     setTimeout(() => {
-      navigate("/feedback");
+      if (currentQuestionIndex + 1 === questions) {
+        navigate("/podium");
+      } else {
+        navigate("/feedback");
+      }
     }, 3000);
   };
 

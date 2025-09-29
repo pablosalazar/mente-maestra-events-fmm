@@ -13,6 +13,7 @@ const RegisterPage = lazy(() => import("./features/auth/pages/RegisterPage"));
 const AvatarSelect = lazy(() => import("./features/users/pages/AvatarSelect"));
 const CountDown = lazy(() => import("./features/game/pages/CountDown"));
 const Feedback = lazy(() => import("./features/game/pages/Feedback"));
+const Podium = lazy(() => import("./features/game/pages/Podium"));
 
 // Admin
 const ActivitiesList = lazy(
@@ -43,17 +44,21 @@ const appRoutes = [
             element: <AvatarSelect />,
           },
           {
-            path: "/contador",
-            element: <CountDown />,
-          },
-          {
             path: "/",
             element: <SessionProvider />,
             children: [
+              {
+                path: "/contador",
+                element: <CountDown />,
+              },
               { path: "/pregunta", element: <QuestionView /> },
               {
                 path: "feedback",
                 element: <Feedback />,
+              },
+              {
+                path: "podium",
+                element: <Podium />,
               },
             ],
           },

@@ -4,11 +4,27 @@ import { useAuth } from "@/hooks/useAuth";
 import { getAvatarFromPath } from "@/utils/avatars";
 import clsx from "clsx";
 import { AlertCircle, Check, Clock, Trophy, X } from "lucide-react";
+import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 export default function Feedback() {
+  const navigate = useNavigate();
+
   const { user } = useAuth();
-  const { currentQuestion } = useSession();
+  const { currentQuestion, nextQuestion } = useSession();
   const { getAnswerByQuestionId } = useGameResults();
+
+  // Use useEffect to ensure the timeout only runs once per component mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      nextQuestion();
+      navigate("/contador");
+    }, 3000);
+
+    // Cleanup timeout if component unmounts
+    return () => clearTimeout(timer);
+  }, [navigate]);
+
   if (!currentQuestion) return null;
 
   const userAnswer = getAnswerByQuestionId(currentQuestion.id);

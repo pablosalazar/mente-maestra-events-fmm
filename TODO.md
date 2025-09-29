@@ -1,1 +1,3 @@
 - [ ] si reinicio las salas, debo reiniciar las session activa o por lo menos resetear los participantes
+- boton salir
+- agregar username

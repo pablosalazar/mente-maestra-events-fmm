@@ -16,7 +16,7 @@ import { toast } from "sonner";
 import { formatDateToSpanishIntl } from "@/utils/date";
 import { useState } from "react";
 import type { Activity } from "../types";
-import { useSettings } from "@/hooks/useSettings";
+import { useSettings } from "@/features/settings/context/SettingsContext";
 
 export default function ActivitiesList() {
   const { isOpen, openModal, closeModal } = useModal();

@@ -28,8 +28,7 @@ export default function AvatarSelect() {
         avatar: user.avatar,
       },
     }).then(() => {
-      toast.success("Avatar guardado");
-      navigate("/");
+      navigate("/pregunta");
     });
   };
 
