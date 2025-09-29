@@ -10,6 +10,15 @@
   left: 0;
   width: 100vw;
   height: 100vh;
+  /* Prevent pull-to-refresh and touch scrolling */
+  touch-action: none;
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .app-layout::before {

@@ -3,6 +3,13 @@
 @import "./assets/css/_buttons.css";
 @import "./assets/css/_inputs.css";
 
+html,
+body {
+  touch-action: manipulation;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
 body {
   color: var(--primary);
   font-family: "Montserrat", "Inter", sans-serif;

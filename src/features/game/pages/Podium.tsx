@@ -43,9 +43,9 @@ export default function Podium() {
   // Función para obtener colores según la posición
   const getPodiumColors = (position: number) => {
     switch (position) {
-      case 1:
+      case 5:
         return "bg-gradient-to-br from-yellow-400 to-yellow-600 border-yellow-500";
-      case 2:
+      case 4:
         return "bg-gradient-to-br from-gray-300 to-gray-500 border-gray-400";
       case 3:
         return "bg-gradient-to-br from-amber-400 to-amber-600 border-amber-500";
@@ -57,9 +57,9 @@ export default function Podium() {
   // Función para obtener iconos según la posición
   const getPodiumIcon = (position: number) => {
     switch (position) {
-      case 1:
+      case 5:
         return <Crown className="w-6 h-6 text-yellow-500" />;
-      case 2:
+      case 4:
         return <Medal className="w-5 h-5 text-gray-400" />;
       case 3:
         return <Award className="w-5 h-5 text-amber-600" />;
