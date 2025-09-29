@@ -11,6 +11,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firestore";
 import type { User, UserCreate, UserUpdate } from "@/features/users/types";
+import { generateUsername } from "@/utils/generateUsername";
 
 export class UserService {
   private static readonly COLLECTION = "users";
@@ -25,6 +26,7 @@ export class UserService {
           id: doc.id,
           name: data.name,
           avatar: data.avatar,
+          username: data.username,
           documentNumber: data.documentNumber,
           createdAt: data.createdAt?.toDate() || new Date(),
         };
@@ -45,14 +47,21 @@ export class UserService {
         throw new Error("Este usuario ya ha participado de la actividad");
       }
 
+      const generatedUsername = generateUsername(
+        userData.name,
+        userData.documentNumber
+      );
+
       const docRef = await addDoc(collection(db, this.COLLECTION), {
         ...userData,
+        username: generatedUsername,
         createdAt: Timestamp.now(),
       });
 
       const newUser: User = {
         id: docRef.id,
         ...userData,
+        username: generatedUsername,
         createdAt: new Date(),
       };
 
@@ -96,6 +105,7 @@ export class UserService {
         id: updatedDocSnap.id,
         name: data.name,
         avatar: data.avatar,
+        username: data.username,
         documentNumber: data.documentNumber,
         createdAt: data.createdAt?.toDate() || new Date(),
       };
@@ -121,6 +131,7 @@ export class UserService {
         id: docSnap.id,
         name: data.name,
         avatar: data.avatar,
+        username: data.username,
         documentNumber: data.documentNumber,
         createdAt: data.createdAt?.toDate() || new Date(),
       };
@@ -152,6 +163,7 @@ export class UserService {
         id: doc.id,
         name: data.name,
         avatar: data.avatar,
+        username: data.username,
         documentNumber: data.documentNumber,
         createdAt: data.createdAt?.toDate() || new Date(),
       };

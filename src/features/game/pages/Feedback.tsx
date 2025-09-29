@@ -56,7 +56,7 @@ export default function Feedback() {
                 <>
                   <img
                     src={getAvatarFromPath(user?.avatar || "")}
-                    alt={user?.name || ""}
+                    alt={user?.username || ""}
                     className={clsx(
                       "w-24 h-24 rounded-full border-4 border-white shadow-lg",
                       !hasAnswered && "grayscale opacity-70"
@@ -69,7 +69,7 @@ export default function Feedback() {
                         !hasAnswered ? "text-gray-500" : "text-gray-800"
                       )}
                     >
-                      {user.name}
+                      {user.username}
                     </h2>
                     {!hasAnswered && (
                       <p className="text-lg text-gray-500 italic mt-2">

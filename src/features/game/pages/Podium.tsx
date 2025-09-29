@@ -101,11 +101,11 @@ export default function Podium() {
         <div className="text-center mb-2">
           <img
             src={getAvatarFromPath(user.avatar || "")}
-            alt={user.name}
+            alt={user.username}
             className="w-20 h-20 rounded-full border-4 border-white shadow-lg mx-auto mb-3"
           />
           <h2 className="text-2xl font-bold mb-1 text-gray-700">
-            @{user.name}
+            @{user.username}
           </h2>
         </div>
 

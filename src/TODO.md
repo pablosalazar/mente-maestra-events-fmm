@@ -1,1 +1,2 @@
 - if the user refresh the browser, not keep the user info (localstorage) and redirct to login
+- Prevenir refrescar

@@ -11,9 +11,9 @@ export const AppLayout = () => {
     <div className="app-layout">
       {user ? (
         <div className="player-info">
-          {user?.name}
+          {user?.username}
           <figure className="player-info__avatar">
-            <img src={user?.avatar || defaultAvatar} alt={user?.name} />
+            <img src={user?.avatar || defaultAvatar} alt={user?.username} />
           </figure>
         </div>
       ) : null}

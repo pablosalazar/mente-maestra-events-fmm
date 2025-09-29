@@ -4,6 +4,7 @@ import { errorMessages } from "@/constants/errorMessages";
 export const userSchema = z.object({
   id: z.uuid(),
   name: z.string().min(1, errorMessages.required),
+  username: z.string().optional(),
   avatar: z.string().optional(),
   documentNumber: z
     .string()
@@ -18,7 +19,9 @@ export const userCreateSchema = userSchema.omit({
   createdAt: true,
 });
 
-export const userUpdateSchema = userSchema.omit({
-  id: true,
-  createdAt: true,
-}).partial();
+export const userUpdateSchema = userSchema
+  .omit({
+    id: true,
+    createdAt: true,
+  })
+  .partial();
