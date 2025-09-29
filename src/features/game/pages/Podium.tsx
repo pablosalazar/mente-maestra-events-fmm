@@ -1,21 +1,40 @@
 import { useGameResults } from "@/contexts/GameResultsContext";
 import { useSettings } from "@/features/settings/context/SettingsContext";
 import { useAuth } from "@/hooks/useAuth";
+import { useSession } from "@/contexts/SessionContext";
+import { useNavigate } from "react-router";
 import { getAvatarFromPath } from "@/utils/avatars";
 import { formatTime } from "@/utils/time";
 import clsx from "clsx";
-import { Crown, Trophy, Medal, Award, Clock } from "lucide-react";
-import { useMemo } from "react";
+import { Crown, Trophy, Medal, Award, Clock, LogOut } from "lucide-react";
+import { useEffect, useMemo } from "react";
 
 export default function Podium() {
-  const { totalScore, correctAnswers, answers } = useGameResults();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const { totalScore, correctAnswers, answers, resetResults } =
+    useGameResults();
   const { settings } = useSettings();
   const { user } = useAuth();
+  const { resetSession } = useSession();
+
+  useEffect(() => {
+    setTimeout(() => {
+      navigate("/");
+    }, 6000);
+  }, []);
 
   const totalTime = useMemo(
     () => answers.reduce((sum, answer) => sum + answer.responseTimeMs, 0),
     [answers]
   );
+
+  const handleExit = () => {
+    resetSession();
+    resetResults();
+
+    logout();
+  };
 
   if (!user) {
     return null;
@@ -127,14 +146,13 @@ export default function Podium() {
         )}
       </div>
 
-      {/* Exit Button */}
-      {/* <button
+      <button
         onClick={handleExit}
         className="btn btn-primary flex items-center gap-2"
       >
         <LogOut className="w-6 h-6" />
         Salir
-      </button> */}
+      </button>
     </div>
   );
 }

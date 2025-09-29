@@ -59,7 +59,7 @@ export default function QuestionView() {
 
     setTimeout(() => {
       if (currentQuestionIndex + 1 === questions) {
-        navigate("/podium");
+        navigate("/resultados");
       } else {
         navigate("/feedback");
       }

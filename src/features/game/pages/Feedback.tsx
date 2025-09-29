@@ -14,7 +14,6 @@ export default function Feedback() {
   const { currentQuestion, nextQuestion } = useSession();
   const { getAnswerByQuestionId } = useGameResults();
 
-  // Use useEffect to ensure the timeout only runs once per component mount
   useEffect(() => {
     const timer = setTimeout(() => {
       nextQuestion();

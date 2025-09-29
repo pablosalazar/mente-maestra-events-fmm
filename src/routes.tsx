@@ -13,6 +13,7 @@ const RegisterPage = lazy(() => import("./features/auth/pages/RegisterPage"));
 const AvatarSelect = lazy(() => import("./features/users/pages/AvatarSelect"));
 const CountDown = lazy(() => import("./features/game/pages/CountDown"));
 const Feedback = lazy(() => import("./features/game/pages/Feedback"));
+const SaveResults = lazy(() => import("./features/game/pages/SaveResults"));
 const Podium = lazy(() => import("./features/game/pages/Podium"));
 
 // Admin
@@ -57,7 +58,11 @@ const appRoutes = [
                 element: <Feedback />,
               },
               {
-                path: "podium",
+                path: "resultados",
+                element: <SaveResults />,
+              },
+              {
+                path: "podio",
                 element: <Podium />,
               },
             ],
