@@ -52,7 +52,6 @@ export default function ActivitiesList() {
     setEditingActivity(null);
     form.reset({
       name: "",
-      code: "",
       date: new Date(),
     });
     openModal();
@@ -62,7 +61,6 @@ export default function ActivitiesList() {
     setEditingActivity(activity);
     form.reset({
       name: activity.name,
-      code: activity.code,
       date: activity.date,
     });
     openModal();
@@ -185,7 +183,6 @@ export default function ActivitiesList() {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       <div className="flex items-center">
                         <Hash size={14} className="mr-1" />
-                        Código
                       </div>
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -206,7 +203,7 @@ export default function ActivitiesList() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {activities.map((activity) => (
+                  {activities.map((activity, index) => (
                     <tr
                       key={activity.id}
                       className="hover:bg-gray-50 transition-colors"
@@ -214,7 +211,7 @@ export default function ActivitiesList() {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                            {activity.code}
+                            {index + 1}
                           </span>
                         </div>
                       </td>
@@ -231,19 +228,19 @@ export default function ActivitiesList() {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center space-x-3">
                           <Switch
-                            checked={activityCode === activity.code}
-                            onChange={() => updateActivityCode(activity.code)}
+                            checked={activityCode === activity.id}
+                            onChange={() => updateActivityCode(activity.id)}
                             size="sm"
                             disabled={isUpdatingCode}
                           />
                           <span
                             className={`text-sm font-medium ${
-                              activityCode === activity.code
+                              activityCode === activity.id
                                 ? "text-green-700"
                                 : "text-gray-500"
                             }`}
                           >
-                            {activityCode === activity.code
+                            {activityCode === activity.id
                               ? "Activo"
                               : "Inactivo"}
                           </span>
@@ -257,7 +254,7 @@ export default function ActivitiesList() {
                             disabled={
                               isDeleting ||
                               isUpdatingCode ||
-                              activityCode === activity.code
+                              activityCode === activity.id
                             }
                           >
                             Editar
@@ -268,7 +265,7 @@ export default function ActivitiesList() {
                               deletingActivityId === activity.id ||
                               isDeleting ||
                               isUpdatingCode ||
-                              activityCode === activity.code
+                              activityCode === activity.id
                             }
                             className="text-red-600 hover:text-red-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                           >

@@ -4,12 +4,9 @@ import { useActivityContext } from "../context/ActivityContext";
 export function ActivityForm() {
   const { form } = useActivityContext();
   const {
-    watch,
     register,
     formState: { errors },
   } = form;
-
-  console.log(watch());
 
   return (
     <>
@@ -19,13 +16,6 @@ export function ActivityForm() {
           <input id="name" className="form-input" {...register("name")} />
           <span className="form-error">
             {errors.name && <span>{errors.name.message}</span>}
-          </span>
-        </div>
-        <div>
-          <label htmlFor="code">Código</label>
-          <input id="code" className="form-input" {...register("code")} />
-          <span className="form-error">
-            {errors.code && <span>{errors.code.message}</span>}
           </span>
         </div>
 

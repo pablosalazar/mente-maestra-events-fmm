@@ -15,14 +15,6 @@ export const useActivities = () => {
   });
 };
 
-export const useActivityByCode = (code: string) => {
-  return useQuery({
-    queryKey: activityKeys.byCode(code),
-    queryFn: () => ActivityService.getByCode(code),
-    enabled: !!code, // Only run query if code is provided
-  });
-};
-
 // Mutation Hooks
 export const useCreateActivity = () => {
   const queryClient = useQueryClient();

@@ -19,7 +19,6 @@ export const ActivityProvider = () => {
     mode: "onChange",
     defaultValues: {
       name: "",
-      code: "",
       date: new Date(),
     },
   });

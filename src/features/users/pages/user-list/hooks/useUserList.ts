@@ -36,7 +36,7 @@ export function useUserList() {
 
     const userMap = new Map(users.map((user) => [user.id, user]));
     const activityMap = new Map(
-      activities.map((activity) => [activity.code, activity.name])
+      activities.map((activity) => [activity.id, activity.name])
     );
 
     return gameResults.map((result) => {
