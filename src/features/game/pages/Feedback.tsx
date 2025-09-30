@@ -5,16 +5,32 @@ import { getAvatarFromPath } from "@/utils/avatars";
 import clsx from "clsx";
 import { AlertCircle, Check, Clock, Trophy, X } from "lucide-react";
 import { useNavigate } from "react-router";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import feedbackAudio from "@/assets/audios/feedback.mp3";
 
 export default function Feedback() {
   const navigate = useNavigate();
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const { user } = useAuth();
   const { currentQuestion, nextQuestion } = useSession();
   const { getAnswerByQuestionId } = useGameResults();
 
   useEffect(() => {
+    // Intentar reproducir el audio
+    const playAudio = async () => {
+      if (audioRef.current) {
+        try {
+          await audioRef.current.play();
+        } catch (error) {
+          console.log("Autoplay bloqueado por el navegador:", error);
+          // Si el autoplay está bloqueado, podríamos mostrar un botón para reproducir manualmente
+        }
+      }
+    };
+
+    playAudio();
+
     const timer = setTimeout(() => {
       nextQuestion();
       navigate("/contador");
@@ -22,7 +38,7 @@ export default function Feedback() {
 
     // Cleanup timeout if component unmounts
     return () => clearTimeout(timer);
-  }, [navigate]);
+  }, [navigate, nextQuestion]);
 
   if (!currentQuestion) return null;
 
@@ -39,6 +55,11 @@ export default function Feedback() {
 
   return (
     <>
+      {/* Audio element oculto */}
+      <audio ref={audioRef} preload="auto">
+        <source src={feedbackAudio} type="audio/mpeg" />
+      </audio>
+      
       <div className="flex items-center justify-center min-h-screen p-6">
         <div className="w-full min-w-[380px]">
           <div

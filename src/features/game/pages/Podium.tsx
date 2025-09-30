@@ -7,11 +7,13 @@ import { getAvatarFromPath } from "@/utils/avatars";
 import { formatTime } from "@/utils/time";
 import clsx from "clsx";
 import { Crown, Trophy, Medal, Award, Clock, LogOut } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import endAudio from "@/assets/audios/end.mp3";
 
 export default function Podium() {
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const audioRef = useRef<HTMLAudioElement>(null);
   const { totalScore, correctAnswers, answers, resetResults } =
     useGameResults();
   const { settings } = useSettings();
@@ -19,10 +21,23 @@ export default function Podium() {
   const { resetSession } = useSession();
 
   useEffect(() => {
+    // Reproducir audio de finalización cuando el componente se monta
+    const playAudio = async () => {
+      if (audioRef.current) {
+        try {
+          await audioRef.current.play();
+        } catch (error) {
+          console.log("Autoplay bloqueado por el navegador:", error);
+        }
+      }
+    };
+
+    playAudio();
+
     setTimeout(() => {
       navigate("/");
     }, 5000);
-  }, []);
+  }, [navigate]);
 
   const totalTime = useMemo(
     () => answers.reduce((sum, answer) => sum + answer.responseTimeMs, 0),
@@ -69,84 +84,91 @@ export default function Podium() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <div className="text-center mb-2">
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <h1 className="text-4xl font-bold text-[var(--dark-blue)]">
-            ¡Juego Completado!
-          </h1>
-        </div>
-      </div>
+    <>
+      {/* Audio element oculto */}
+      <audio ref={audioRef} preload="auto">
+        <source src={endAudio} type="audio/mpeg" />
+      </audio>
 
-      <div
-        className={clsx(
-          "relative p-8 rounded-2xl border-4 shadow-2xl transition-all duration-500 transform hover:scale-105 w-full max-w-md mb-4",
-          getPodiumColors(correctAnswers),
-          correctAnswers <= 3 ? "text-white" : "text-gray-800"
-        )}
-      >
-        {/* Podium Icon */}
-        <div className="absolute -top-4 -right-4 w-12 h-12 bg-white border-4 border-current rounded-full flex items-center justify-center shadow-xl">
-          {getPodiumIcon(correctAnswers)}
-        </div>
-
-        {/* User Info */}
+      <div className="flex flex-col items-center justify-center min-h-screen">
         <div className="text-center mb-2">
-          <img
-            src={getAvatarFromPath(user.avatar || "")}
-            alt={user.username}
-            className="w-20 h-20 rounded-full border-4 border-white shadow-lg mx-auto mb-3"
-          />
-          <h2 className="text-2xl font-bold mb-1 text-gray-700">
-            @{user.username}
-          </h2>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <h1 className="text-4xl font-bold text-[var(--dark-blue)]">
+              ¡Juego Completado!
+            </h1>
+          </div>
         </div>
 
-        <div className="text-center text-3xl mb-3 font-bold  ">
-          Aciertos: {correctAnswers} de {settings.questions}
-        </div>
+        <div
+          className={clsx(
+            "relative p-8 rounded-2xl border-4 shadow-2xl transition-all duration-500 transform hover:scale-105 w-full max-w-md mb-4",
+            getPodiumColors(correctAnswers),
+            correctAnswers <= 3 ? "text-white" : "text-gray-800"
+          )}
+        >
+          {/* Podium Icon */}
+          <div className="absolute -top-4 -right-4 w-12 h-12 bg-white border-4 border-current rounded-full flex items-center justify-center shadow-xl">
+            {getPodiumIcon(correctAnswers)}
+          </div>
 
-        {/* Score */}
-        <div className="text-center mb-6">
-          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 mb-3">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-semibold opacity-90">
-                PUNTUACIÓN TOTAL
-              </span>
-              <Trophy className="w-4 h-4" />
+          {/* User Info */}
+          <div className="text-center mb-2">
+            <img
+              src={getAvatarFromPath(user.avatar || "")}
+              alt={user.username}
+              className="w-20 h-20 rounded-full border-4 border-white shadow-lg mx-auto mb-3"
+            />
+            <h2 className="text-2xl font-bold mb-1 text-gray-700">
+              @{user.username}
+            </h2>
+          </div>
+
+          <div className="text-center text-3xl mb-3 font-bold  ">
+            Aciertos: {correctAnswers} de {settings.questions}
+          </div>
+
+          {/* Score */}
+          <div className="text-center mb-6">
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 mb-3">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-semibold opacity-90">
+                  PUNTUACIÓN TOTAL
+                </span>
+                <Trophy className="w-4 h-4" />
+              </div>
+              <p className="text-3xl font-bold">{totalScore}</p>
             </div>
-            <p className="text-3xl font-bold">{totalScore}</p>
           </div>
-        </div>
 
-        {/* Statistics */}
-        <div className="space-y-3">
-          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold opacity-90">
-                TIEMPO EMPLEADO
-              </span>
-              <Clock className="w-4 h-4" />
+          {/* Statistics */}
+          <div className="space-y-3">
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-semibold opacity-90">
+                  TIEMPO EMPLEADO
+                </span>
+                <Clock className="w-4 h-4" />
+              </div>
+              <p className="text-lg font-bold">{formatTime(totalTime)}</p>
             </div>
-            <p className="text-lg font-bold">{formatTime(totalTime)}</p>
           </div>
+
+          {/* Winner Crown for 1st place */}
+          {correctAnswers === settings.questions && (
+            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
+              <div className="text-6xl animate-bounce">👑</div>
+            </div>
+          )}
         </div>
 
-        {/* Winner Crown for 1st place */}
-        {correctAnswers === settings.questions && (
-          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
-            <div className="text-6xl animate-bounce">👑</div>
-          </div>
-        )}
+        <button
+          onClick={handleExit}
+          className="btn btn-primary flex items-center gap-2"
+        >
+          <LogOut className="w-6 h-6" />
+          Salir
+        </button>
       </div>
-
-      <button
-        onClick={handleExit}
-        className="btn btn-primary flex items-center gap-2"
-      >
-        <LogOut className="w-6 h-6" />
-        Salir
-      </button>
-    </div>
+    </>
   );
 }
