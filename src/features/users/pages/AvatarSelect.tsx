@@ -35,13 +35,13 @@ export default function AvatarSelect() {
   return (
     <>
       {isPending && <Loader message="Guardando avatar..." />}
-      <div className="max-w-2xl mx-auto mt-[-40px]">
-        <div className="glass-card mx-auto">
+      <div className="max-w-2xl mx-auto">
+        <div className="glass-card mx-auto mt-[-80px]">
           <h2 className="text-2xl font-bold text-[var(--dark-blue)] ">
             Elige tu avatar
           </h2>
         </div>
-        <div className="grid grid-cols-4 gap-6 mt-10 mb-10">
+        <div className="grid grid-cols-4 gap-4 my-8">
           {avatars.map((src, i) => (
             <button
               key={src}
@@ -68,7 +68,7 @@ export default function AvatarSelect() {
             className="btn btn-primary"
             onClick={handleSaveAvatar}
           >
-            Guardar y continuar
+            Guardar y Continuar
           </button>
         </div>
       </div>

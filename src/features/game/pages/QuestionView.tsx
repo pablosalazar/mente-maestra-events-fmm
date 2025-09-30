@@ -63,7 +63,7 @@ export default function QuestionView() {
       } else {
         navigate("/feedback");
       }
-    }, 3000);
+    }, 2000);
   };
 
   const handleTimeUp = () => {

@@ -21,7 +21,7 @@ export default function Podium() {
   useEffect(() => {
     setTimeout(() => {
       navigate("/");
-    }, 6000);
+    }, 5000);
   }, []);
 
   const totalTime = useMemo(
@@ -86,11 +86,11 @@ export default function Podium() {
         )}
       >
         {/* Position Badge */}
-        <div className="absolute -top-4 -left-4 w-12 h-12 bg-white border-4 border-current rounded-full flex items-center justify-center shadow-xl">
+        {/* <div className="absolute -top-4 -left-4 w-12 h-12 bg-white border-4 border-current rounded-full flex items-center justify-center shadow-xl">
           <span className="font-extrabold text-2xl text-gray-800">
-            {correctAnswers}
+            {correctAnswers}/5
           </span>
-        </div>
+        </div> */}
 
         {/* Podium Icon */}
         <div className="absolute -top-4 -right-4 w-12 h-12 bg-white border-4 border-current rounded-full flex items-center justify-center shadow-xl">
@@ -107,6 +107,10 @@ export default function Podium() {
           <h2 className="text-2xl font-bold mb-1 text-gray-700">
             @{user.username}
           </h2>
+        </div>
+
+        <div className="text-center text-2xl mb-3">
+          Aciertos: {correctAnswers} de {settings.questions}
         </div>
 
         {/* Score */}
@@ -132,9 +136,6 @@ export default function Podium() {
               <Clock className="w-4 h-4" />
             </div>
             <p className="text-lg font-bold">{formatTime(totalTime)}</p>
-          </div>
-          <div className="text-end">
-            Aciertos: {correctAnswers}/{settings.questions}
           </div>
         </div>
 
