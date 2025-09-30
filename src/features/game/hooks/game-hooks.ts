@@ -10,6 +10,7 @@ export const gameKeys = {
     ["gameResults", "top", activityCode, limit] as const,
   activityResults: (activityCode: string) =>
     ["gameResults", "activity", activityCode] as const,
+  allResults: ["gameResults", "all"] as const,
 };
 
 // Query Hooks
@@ -37,6 +38,13 @@ export const useActivityResults = (activityCode: string) => {
   });
 };
 
+export const useAllResults = () => {
+  return useQuery({
+    queryKey: gameKeys.allResults,
+    queryFn: () => GameService.getAllResults(),
+  });
+};
+
 // Mutation Hooks
 export const useSaveGameResult = () => {
   const queryClient = useQueryClient();
@@ -48,6 +56,10 @@ export const useSaveGameResult = () => {
       // Invalidate related queries
       queryClient.invalidateQueries({
         queryKey: gameKeys.userResults(variables.userId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: gameKeys.allResults,
       });
 
       if (variables.activityCode) {

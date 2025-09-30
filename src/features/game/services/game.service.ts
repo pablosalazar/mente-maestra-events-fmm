@@ -98,4 +98,23 @@ export class GameService {
       throw new Error("Failed to fetch activity results");
     }
   }
+
+  static async getAllResults(): Promise<GameResult[]> {
+    try {
+      const q = query(
+        collection(db, this.COLLECTION),
+        orderBy("completedAt", "desc")
+      );
+
+      const querySnapshot = await getDocs(q);
+      return querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+        completedAt: doc.data().completedAt.toDate(),
+      })) as GameResult[];
+    } catch (error) {
+      console.error("Error fetching all results:", error);
+      throw new Error("Failed to fetch all results");
+    }
+  }
 }

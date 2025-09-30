@@ -19,7 +19,7 @@ export class UserService {
 
   static async getAll(): Promise<User[]> {
     try {
-      const querySnapshot = await getDocs(collection(db, this.COLLECTION));
+      const querySnapshot = await getDocs(collection(db, "users"));
 
       return querySnapshot.docs.map((doc) => {
         const data = doc.data();
@@ -41,10 +41,13 @@ export class UserService {
   /**
    * Verifica si un usuario tiene resultados de juego guardados para una actividad específica
    */
-  static async hasGameResults(userId: string, activityCode?: string): Promise<boolean> {
+  static async hasGameResults(
+    userId: string,
+    activityCode?: string
+  ): Promise<boolean> {
     try {
       let q;
-      
+
       if (activityCode) {
         // Verificar resultados para una actividad específica
         q = query(
@@ -74,34 +77,40 @@ export class UserService {
    * - Si existe pero no tiene resultados: puede participar
    * - Si existe y tiene resultados: no puede participar
    */
-  static async canParticipate(documentNumber: string, activityCode?: string): Promise<{
+  static async canParticipate(
+    documentNumber: string,
+    activityCode?: string
+  ): Promise<{
     canParticipate: boolean;
     user?: User;
     reason?: string;
   }> {
     try {
       const existingUser = await this.getByDocumentNumber(documentNumber);
-      
+
       if (!existingUser) {
         // Usuario no existe, puede participar
         return { canParticipate: true };
       }
 
       // Usuario existe, verificar si tiene resultados
-      const hasResults = await this.hasGameResults(existingUser.id, activityCode);
-      
+      const hasResults = await this.hasGameResults(
+        existingUser.id,
+        activityCode
+      );
+
       if (hasResults) {
         return {
           canParticipate: false,
           user: existingUser,
-          reason: "Este usuario ya ha participado en esta actividad"
+          reason: "Este usuario ya ha participado en esta actividad",
         };
       }
 
       // Usuario existe pero no tiene resultados, puede participar
       return {
         canParticipate: true,
-        user: existingUser
+        user: existingUser,
       };
     } catch (error) {
       console.error("Error checking if user can participate:", error);
@@ -112,10 +121,14 @@ export class UserService {
   static async create(userData: UserCreate): Promise<User> {
     try {
       // Verificar si el usuario puede participar
-      const participationCheck = await this.canParticipate(userData.documentNumber);
-      
+      const participationCheck = await this.canParticipate(
+        userData.documentNumber
+      );
+
       if (!participationCheck.canParticipate) {
-        throw new Error(participationCheck.reason || "El usuario no puede participar");
+        throw new Error(
+          participationCheck.reason || "El usuario no puede participar"
+        );
       }
 
       // Si el usuario ya existe pero puede participar, retornarlo

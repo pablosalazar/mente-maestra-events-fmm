@@ -20,6 +20,9 @@ const Podium = lazy(() => import("./features/game/pages/Podium"));
 const ActivitiesList = lazy(
   () => import("./features/activities/pages/ActivitiesList")
 );
+const UserList = lazy(
+  () => import("./features/users/pages/user-list/UserList")
+);
 
 const authRoutes = [
   {
@@ -81,6 +84,10 @@ const adminRoutes = [
         path: "eventos",
         element: <ActivityProvider />,
         children: [{ index: true, element: <ActivitiesList /> }],
+      },
+      {
+        path: "participantes",
+        element: <UserList />,
       },
     ],
   },
