@@ -50,7 +50,6 @@ export function useUserList() {
         name: user?.name || "Usuario no encontrado",
         username: user?.username || "",
         avatar: user?.avatar,
-        documentNumber: result.userDocumentNumber,
         activityCode: result.activityCode,
         activityName: activityName || "Actividad no encontrada",
         correctAnswers: result.correctAnswers,
@@ -67,10 +66,8 @@ export function useUserList() {
     // Filter by search term (name and document number)
     if (searchTerm.trim()) {
       const searchTermLower = searchTerm.toLowerCase().trim();
-      filtered = filtered.filter(
-        (item) =>
-          item.name.toLowerCase().includes(searchTermLower) ||
-          item.documentNumber.toLowerCase().includes(searchTermLower)
+      filtered = filtered.filter((item) =>
+        item.name.toLowerCase().includes(searchTermLower)
       );
     }
 

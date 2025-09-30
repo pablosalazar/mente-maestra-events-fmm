@@ -58,23 +58,6 @@ export function RegisterForm() {
           </span>
         </div>
 
-        <div>
-          <label className="label" htmlFor="documentNumber">
-            Número de Documento
-          </label>
-          <input
-            type="number"
-            {...register("documentNumber")}
-            placeholder="Digite su número de documento"
-            className="form-input"
-          />
-          <span className="form-error">
-            {errors.documentNumber && (
-              <span>{errors.documentNumber.message}</span>
-            )}
-          </span>
-        </div>
-
         <div className="text-center">
           <button
             className="btn btn-primary"

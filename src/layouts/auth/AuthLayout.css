@@ -1,5 +1,5 @@
 .auth-layout {
-  @apply h-screen flex justify-center;
+  @apply h-screen flex items-center justify-center;
   background-image: url("../../assets/images/app-bg.png");
   background-size: cover;
   background-position: center;
@@ -28,6 +28,6 @@
 }
 
 .mente-maestra-logo {
-  width: 350px;
-  margin: 30px auto;
+  width: 360px;
+  margin: -20px auto 30px;
 }

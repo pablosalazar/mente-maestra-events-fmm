@@ -3,7 +3,6 @@ export interface UserWithGameResult {
   name: string;
   username?: string;
   avatar?: string;
-  documentNumber: string;
   activityCode: string | null;
   activityName: string | null;
   correctAnswers: number;
@@ -34,8 +33,15 @@ export interface SearchHandlers {
   clearSearch: () => void;
 }
 
-export type SortField = 'name' | 'username' | 'documentNumber' | 'activityName' | 'activityCode' | 'correctAnswers' | 'totalScore' | 'totalTimeMs';
-export type SortDirection = 'asc' | 'desc';
+export type SortField =
+  | "name"
+  | "username"
+  | "activityName"
+  | "activityCode"
+  | "correctAnswers"
+  | "totalScore"
+  | "totalTimeMs";
+export type SortDirection = "asc" | "desc";
 
 export interface SortState {
   field: SortField | null;

@@ -46,11 +46,11 @@ export default function Podium() {
       case 5:
         return "bg-gradient-to-br from-yellow-400 to-yellow-600 border-yellow-500";
       case 4:
-        return "bg-gradient-to-br from-gray-300 to-gray-500 border-gray-400";
+        return "bg-gradient-to-br from-blue-400 to-blue-600 border-blue-500";
       case 3:
         return "bg-gradient-to-br from-amber-400 to-amber-600 border-amber-500";
       default:
-        return "bg-gradient-to-br from-blue-400 to-blue-600 border-blue-500";
+        return "bg-gradient-to-br from-gray-300 to-gray-500 border-gray-400";
     }
   };
 
@@ -85,13 +85,6 @@ export default function Podium() {
           correctAnswers <= 3 ? "text-white" : "text-gray-800"
         )}
       >
-        {/* Position Badge */}
-        {/* <div className="absolute -top-4 -left-4 w-12 h-12 bg-white border-4 border-current rounded-full flex items-center justify-center shadow-xl">
-          <span className="font-extrabold text-2xl text-gray-800">
-            {correctAnswers}/5
-          </span>
-        </div> */}
-
         {/* Podium Icon */}
         <div className="absolute -top-4 -right-4 w-12 h-12 bg-white border-4 border-current rounded-full flex items-center justify-center shadow-xl">
           {getPodiumIcon(correctAnswers)}

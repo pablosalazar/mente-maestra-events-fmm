@@ -1,6 +1,11 @@
 import { getAvatarFromPath } from "@/utils/avatars";
 import { formatTime } from "@/utils/time";
-import { type UserWithGameResult, type SortState, type SortHandlers, type SortField } from "../types";
+import {
+  type UserWithGameResult,
+  type SortState,
+  type SortHandlers,
+  type SortField,
+} from "../types";
 
 interface UserTableProps {
   data: UserWithGameResult[];
@@ -16,12 +21,17 @@ interface SortableHeaderProps {
   onSort: (field: SortField) => void;
 }
 
-function SortableHeader({ field, children, sortState, onSort }: SortableHeaderProps) {
+function SortableHeader({
+  field,
+  children,
+  sortState,
+  onSort,
+}: SortableHeaderProps) {
   const isActive = sortState.field === field;
   const direction = sortState.direction;
 
   return (
-    <th 
+    <th
       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 select-none"
       onClick={() => onSort(field)}
     >
@@ -29,18 +39,34 @@ function SortableHeader({ field, children, sortState, onSort }: SortableHeaderPr
         <span>{children}</span>
         <div className="flex flex-col">
           <svg
-            className={`w-3 h-3 ${isActive && direction === 'asc' ? 'text-blue-600' : 'text-gray-300'}`}
+            className={`w-3 h-3 ${
+              isActive && direction === "asc"
+                ? "text-blue-600"
+                : "text-gray-300"
+            }`}
             fill="currentColor"
             viewBox="0 0 20 20"
           >
-            <path fillRule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clipRule="evenodd" />
+            <path
+              fillRule="evenodd"
+              d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
+              clipRule="evenodd"
+            />
           </svg>
           <svg
-            className={`w-3 h-3 -mt-1 ${isActive && direction === 'desc' ? 'text-blue-600' : 'text-gray-300'}`}
+            className={`w-3 h-3 -mt-1 ${
+              isActive && direction === "desc"
+                ? "text-blue-600"
+                : "text-gray-300"
+            }`}
             fill="currentColor"
             viewBox="0 0 20 20"
           >
-            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+            <path
+              fillRule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clipRule="evenodd"
+            />
           </svg>
         </div>
       </div>
@@ -48,9 +74,17 @@ function SortableHeader({ field, children, sortState, onSort }: SortableHeaderPr
   );
 }
 
-function TruncatedText({ text, maxLength = 20 }: { text: string; maxLength?: number }) {
+function TruncatedText({
+  text,
+  maxLength = 20,
+}: {
+  text: string;
+  maxLength?: number;
+}) {
   const shouldTruncate = text.length > maxLength;
-  const displayText = shouldTruncate ? `${text.substring(0, maxLength)}...` : text;
+  const displayText = shouldTruncate
+    ? `${text.substring(0, maxLength)}...`
+    : text;
 
   if (shouldTruncate) {
     return (
@@ -63,14 +97,15 @@ function TruncatedText({ text, maxLength = 20 }: { text: string; maxLength?: num
     );
   }
 
-  return (
-    <div className="text-sm text-gray-900">
-      {displayText}
-    </div>
-  );
+  return <div className="text-sm text-gray-900">{displayText}</div>;
 }
 
-export function UserTable({ data, totalItems, sortState, sortHandlers }: UserTableProps) {
+export function UserTable({
+  data,
+  totalItems,
+  sortState,
+  sortHandlers,
+}: UserTableProps) {
   return (
     <div className="overflow-x-auto max-h-[calc(100vh-400px)]">
       <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow">
@@ -79,28 +114,47 @@ export function UserTable({ data, totalItems, sortState, sortHandlers }: UserTab
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Avatar
             </th>
-            <SortableHeader field="name" sortState={sortState} onSort={sortHandlers.handleSort}>
+            <SortableHeader
+              field="name"
+              sortState={sortState}
+              onSort={sortHandlers.handleSort}
+            >
               Nombre
             </SortableHeader>
-            <SortableHeader field="username" sortState={sortState} onSort={sortHandlers.handleSort}>
-              Usuario
-            </SortableHeader>
-            <SortableHeader field="documentNumber" sortState={sortState} onSort={sortHandlers.handleSort}>
-              Documento
-            </SortableHeader>
-            <SortableHeader field="activityName" sortState={sortState} onSort={sortHandlers.handleSort}>
+
+            <SortableHeader
+              field="activityName"
+              sortState={sortState}
+              onSort={sortHandlers.handleSort}
+            >
               Evento
             </SortableHeader>
-            <SortableHeader field="activityCode" sortState={sortState} onSort={sortHandlers.handleSort}>
+            <SortableHeader
+              field="activityCode"
+              sortState={sortState}
+              onSort={sortHandlers.handleSort}
+            >
               Código Actividad
             </SortableHeader>
-            <SortableHeader field="correctAnswers" sortState={sortState} onSort={sortHandlers.handleSort}>
+            <SortableHeader
+              field="correctAnswers"
+              sortState={sortState}
+              onSort={sortHandlers.handleSort}
+            >
               Respuestas Correctas
             </SortableHeader>
-            <SortableHeader field="totalScore" sortState={sortState} onSort={sortHandlers.handleSort}>
+            <SortableHeader
+              field="totalScore"
+              sortState={sortState}
+              onSort={sortHandlers.handleSort}
+            >
               Puntaje Total
             </SortableHeader>
-            <SortableHeader field="totalTimeMs" sortState={sortState} onSort={sortHandlers.handleSort}>
+            <SortableHeader
+              field="totalTimeMs"
+              sortState={sortState}
+              onSort={sortHandlers.handleSort}
+            >
               Tiempo Total
             </SortableHeader>
           </tr>
@@ -139,19 +193,10 @@ export function UserTable({ data, totalItems, sortState, sortHandlers }: UserTab
                     {item.name}
                   </div>
                 </td>
+
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-500">
-                    {item.username || "-"}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">
-                    {item.documentNumber}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <TruncatedText 
-                    text={item.activityName || "Evento no encontrado"} 
+                  <TruncatedText
+                    text={item.activityName || "Evento no encontrado"}
                     maxLength={20}
                   />
                 </td>

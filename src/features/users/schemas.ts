@@ -3,13 +3,12 @@ import { errorMessages } from "@/constants/errorMessages";
 
 export const userSchema = z.object({
   id: z.uuid(),
-  name: z.string().min(1, errorMessages.required),
+  name: z
+    .string()
+    .min(3, errorMessages.minLength(3))
+    .max(50, errorMessages.maxLength(50)),
   username: z.string().optional(),
   avatar: z.string().optional(),
-  documentNumber: z
-    .string()
-    .min(1, errorMessages.required)
-    .refine((val) => !isNaN(Number(val)), errorMessages.numeric),
   createdAt: z.date(),
 });
 

@@ -39,7 +39,6 @@ export default function SaveResults() {
     // Save game result
     const gameResult: GameResultCreate = {
       userId: user.id,
-      userDocumentNumber: user.documentNumber,
       activityCode: settings.activityCode,
       answers: answers,
       totalScore: totalScore,

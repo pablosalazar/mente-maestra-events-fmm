@@ -4,6 +4,7 @@ export const errorMessages = {
   selectRequired: "Selecciona una opción",
   acceptTerms: "Acepta la política y autorización de datos personales",
   documentMatch: "Los números de documento no coinciden",
-  maxLength: (max: number) => `Máximo ${max} letras/números`,
+  maxLength: (max: number) => `Máximo ${max} letras`,
+  minLength: (min: number) => `Mínimo ${min} letras`,
   dateFormat: "Formato de fecha inválido",
 };

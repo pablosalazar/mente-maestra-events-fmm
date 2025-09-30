@@ -6,8 +6,6 @@ import type { User, UserCreate, UserUpdate } from "./types";
 export const userKeys = {
   all: ["users"] as const,
   byId: (id: string) => ["users", "by-id", id] as const,
-  byDocumentNumber: (documentNumber: string) =>
-    ["users", "by-document", documentNumber] as const,
 };
 
 // Query Hooks
@@ -26,14 +24,6 @@ export const useUserById = (id: string) => {
   });
 };
 
-export const useUserByDocumentNumber = (documentNumber: string) => {
-  return useQuery({
-    queryKey: userKeys.byDocumentNumber(documentNumber),
-    queryFn: () => UserService.getByDocumentNumber(documentNumber),
-    enabled: !!documentNumber, // Only run query if documentNumber is provided
-  });
-};
-
 // Mutation Hooks
 export const useCreateUser = () => {
   const queryClient = useQueryClient();
@@ -48,10 +38,6 @@ export const useCreateUser = () => {
 
       // Add the new user to the cache
       queryClient.setQueryData(userKeys.byId(newUser.id), newUser);
-      queryClient.setQueryData(
-        userKeys.byDocumentNumber(newUser.documentNumber),
-        newUser
-      );
     },
     onError: (error) => {
       console.error("Error registering user:", error);
@@ -73,20 +59,9 @@ export const useUpdateUser = () => {
 
       // Update the user in the cache
       queryClient.setQueryData(userKeys.byId(updatedUser.id), updatedUser);
-      queryClient.setQueryData(
-        userKeys.byDocumentNumber(updatedUser.documentNumber),
-        updatedUser
-      );
     },
     onError: (error) => {
       console.error("Error updating user:", error);
     },
-  });
-};
-
-export const useCheckUserExists = () => {
-  return useMutation({
-    mutationFn: (documentNumber: string) =>
-      UserService.getByDocumentNumber(documentNumber),
   });
 };

@@ -3,7 +3,6 @@ import type { UserAnswer } from "@/contexts/GameResultsContext";
 export interface GameResult {
   id?: string;
   userId: string;
-  userDocumentNumber: string;
   activityCode: string | null;
   answers: UserAnswer[];
   totalScore: number;

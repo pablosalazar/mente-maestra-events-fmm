@@ -40,7 +40,7 @@ export default function Feedback() {
   return (
     <>
       <div className="flex items-center justify-center min-h-screen p-6">
-        <div className="w-full max-w-lg">
+        <div className="w-full min-w-[380px]">
           <div
             className={clsx(
               "relative p-8 rounded-2xl border-4 shadow-lg transition-all duration-500 transform hover:scale-105",
@@ -56,7 +56,7 @@ export default function Feedback() {
                 <>
                   <img
                     src={getAvatarFromPath(user?.avatar || "")}
-                    alt={user?.username || ""}
+                    alt={user.username || ""}
                     className={clsx(
                       "w-24 h-24 rounded-full border-4 border-white shadow-lg",
                       !hasAnswered && "grayscale opacity-70"
