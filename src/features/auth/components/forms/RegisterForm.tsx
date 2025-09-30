@@ -63,7 +63,7 @@ export function RegisterForm() {
             Número de Documento
           </label>
           <input
-            type="numeric"
+            type="number"
             {...register("documentNumber")}
             placeholder="Digite su número de documento"
             className="form-input"

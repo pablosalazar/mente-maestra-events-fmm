@@ -83,7 +83,12 @@ const adminRoutes = [
       {
         path: "eventos",
         element: <ActivityProvider />,
-        children: [{ index: true, element: <ActivitiesList /> }],
+        children: [
+          {
+            index: true,
+            element: <ActivitiesList />,
+          },
+        ],
       },
       {
         path: "participantes",
