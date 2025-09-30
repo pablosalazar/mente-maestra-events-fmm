@@ -1,17 +1,23 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMemo, useState } from "react";
 import { useUsers } from "../../../hooks";
 import { useAllResults } from "@/features/game/hooks/game-hooks";
+import { useActivities } from "@/features/activities/hooks/activity-hooks";
 import {
   type UserWithGameResult,
   type PaginationState,
   type PaginationHandlers,
   type SearchState,
   type SearchHandlers,
+  type SortState,
+  type SortHandlers,
+  type SortField,
 } from "../types";
 
 export function useUserList() {
   const { data: users, isLoading: usersLoading } = useUsers();
   const { data: gameResults, isLoading: resultsLoading } = useAllResults();
+  const { data: activities, isLoading: activitiesLoading } = useActivities();
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,13 +27,24 @@ export function useUserList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activityCodeFilter, setActivityCodeFilter] = useState("");
 
+  // Sort state
+  const [sortField, setSortField] = useState<SortField | null>(null);
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+
   const combinedData = useMemo((): UserWithGameResult[] => {
-    if (!users || !gameResults) return [];
+    if (!users || !gameResults || !activities) return [];
 
     const userMap = new Map(users.map((user) => [user.id, user]));
+    const activityMap = new Map(
+      activities.map((activity) => [activity.code, activity.name])
+    );
 
     return gameResults.map((result) => {
       const user = userMap.get(result.userId);
+      const activityName = result.activityCode
+        ? activityMap.get(result.activityCode)
+        : null;
+
       return {
         id: result.id || "",
         name: user?.name || "Usuario no encontrado",
@@ -35,12 +52,13 @@ export function useUserList() {
         avatar: user?.avatar,
         documentNumber: result.userDocumentNumber,
         activityCode: result.activityCode,
+        activityName: activityName || "Actividad no encontrada",
         correctAnswers: result.correctAnswers,
         totalScore: result.totalScore,
         totalTimeMs: result.totalTimeMs,
       };
     });
-  }, [users, gameResults]);
+  }, [users, gameResults, activities]);
 
   // Filter data based on search
   const filteredData = useMemo(() => {
@@ -66,12 +84,42 @@ export function useUserList() {
     return filtered;
   }, [combinedData, searchTerm, activityCodeFilter]);
 
-  // Pagination calculations (based on filtered data)
-  const totalItems = filteredData.length;
+  // Sort data
+  const sortedData = useMemo(() => {
+    if (!sortField) return filteredData;
+
+    return [...filteredData].sort((a, b) => {
+      let aValue: any = a[sortField];
+      let bValue: any = b[sortField];
+
+      // Handle null/undefined values
+      if (aValue == null && bValue == null) return 0;
+      if (aValue == null) return sortDirection === "asc" ? 1 : -1;
+      if (bValue == null) return sortDirection === "asc" ? -1 : 1;
+
+      // Convert to string for string comparison
+      if (typeof aValue === "string" && typeof bValue === "string") {
+        aValue = aValue.toLowerCase();
+        bValue = bValue.toLowerCase();
+      }
+
+      let comparison = 0;
+      if (aValue < bValue) {
+        comparison = -1;
+      } else if (aValue > bValue) {
+        comparison = 1;
+      }
+
+      return sortDirection === "desc" ? -comparison : comparison;
+    });
+  }, [filteredData, sortField, sortDirection]);
+
+  // Pagination calculations (based on sorted data)
+  const totalItems = sortedData.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentData = filteredData.slice(startIndex, endIndex);
+  const currentData = sortedData.slice(startIndex, endIndex);
 
   // Reset to first page when search changes
   const handleSearchTermChange = (term: string) => {
@@ -82,6 +130,19 @@ export function useUserList() {
   const handleActivityCodeFilterChange = (code: string) => {
     setActivityCodeFilter(code);
     setCurrentPage(1);
+  };
+
+  // Sort handlers
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      // Toggle direction if same field
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      // Set new field with ascending direction
+      setSortField(field);
+      setSortDirection("asc");
+    }
+    setCurrentPage(1); // Reset to first page when sorting
   };
 
   // Pagination handlers
@@ -132,6 +193,15 @@ export function useUserList() {
     clearSearch,
   };
 
+  const sortState: SortState = {
+    field: sortField,
+    direction: sortDirection,
+  };
+
+  const sortHandlers: SortHandlers = {
+    handleSort,
+  };
+
   return {
     // Data
     combinedData,
@@ -139,7 +209,7 @@ export function useUserList() {
     currentData,
 
     // Loading states
-    isLoading: usersLoading || resultsLoading,
+    isLoading: usersLoading || resultsLoading || activitiesLoading,
 
     // Pagination
     paginationState,
@@ -154,5 +224,9 @@ export function useUserList() {
     searchHandlers,
     totalResults: combinedData.length,
     filteredResults: filteredData.length,
+
+    // Sort
+    sortState,
+    sortHandlers,
   };
 }

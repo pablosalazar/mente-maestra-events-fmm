@@ -22,16 +22,21 @@ export function SearchBar({
   const { searchTerm, activityCodeFilter } = searchState;
   const { setSearchTerm, setActivityCodeFilter, clearSearch } = searchHandlers;
 
-  // Get unique activity codes for the dropdown
-  const uniqueActivityCodes = Array.from(
-    new Set(
+  // Get unique activities (code and name pairs) for the dropdown
+  const uniqueActivities = Array.from(
+    new Map(
       allData
-        .map((item) => item.activityCode)
-        .filter((code) => code !== null && code !== "")
-    )
-  ).sort();
+        .filter((item) => item.activityCode && item.activityName)
+        .map((item) => [item.activityCode, item.activityName])
+    ).entries()
+  ).sort((a, b) => a[1]!.localeCompare(b[1]!)); // Sort by activity name
 
   const hasActiveFilters = searchTerm.length > 0 || activityCodeFilter !== "";
+
+  // Get the name of the currently selected activity
+  const selectedActivityName = uniqueActivities.find(
+    ([code]) => code === activityCodeFilter
+  )?.[1];
 
   return (
     <div className="mb-6 space-y-4">
@@ -84,17 +89,17 @@ export function SearchBar({
           </div>
         </div>
 
-        {/* Activity code filter dropdown */}
+        {/* Activity filter dropdown */}
         <div className="sm:w-64">
           <select
             value={activityCodeFilter}
             onChange={(e) => setActivityCodeFilter(e.target.value)}
             className="block w-full px-3 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
           >
-            <option value="">códigos de actividad</option>
-            {uniqueActivityCodes.map((code) => (
-              <option key={code} value={code!}>
-                {code}
+            <option value="">Todas las actividades</option>
+            {uniqueActivities.map(([code, name]) => (
+              <option key={code!} value={code!}>
+                {name}
               </option>
             ))}
           </select>
@@ -125,7 +130,9 @@ export function SearchBar({
                     (filtros activos:
                     {searchTerm && " búsqueda de texto"}
                     {searchTerm && activityCodeFilter && ","}
-                    {activityCodeFilter && ` código "${activityCodeFilter}"`})
+                    {activityCodeFilter &&
+                      ` actividad "${selectedActivityName}"`}
+                    )
                   </span>
                 )}
               </>

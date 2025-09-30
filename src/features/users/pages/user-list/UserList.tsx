@@ -19,6 +19,8 @@ export default function UserList() {
     searchHandlers,
     totalResults,
     filteredResults,
+    sortState,
+    sortHandlers,
   } = useUserList();
 
   if (isLoading) {
@@ -37,7 +39,12 @@ export default function UserList() {
         allData={combinedData}
       />
 
-      <UserTable data={currentData} totalItems={totalItems} />
+      <UserTable 
+        data={currentData} 
+        totalItems={totalItems}
+        sortState={sortState}
+        sortHandlers={sortHandlers}
+      />
 
       <Pagination
         paginationState={paginationState}

@@ -5,6 +5,7 @@ export interface UserWithGameResult {
   avatar?: string;
   documentNumber: string;
   activityCode: string | null;
+  activityName: string | null;
   correctAnswers: number;
   totalScore: number;
   totalTimeMs: number;
@@ -31,4 +32,16 @@ export interface SearchHandlers {
   setSearchTerm: (term: string) => void;
   setActivityCodeFilter: (code: string) => void;
   clearSearch: () => void;
+}
+
+export type SortField = 'name' | 'username' | 'documentNumber' | 'activityName' | 'activityCode' | 'correctAnswers' | 'totalScore' | 'totalTimeMs';
+export type SortDirection = 'asc' | 'desc';
+
+export interface SortState {
+  field: SortField | null;
+  direction: SortDirection;
+}
+
+export interface SortHandlers {
+  handleSort: (field: SortField) => void;
 }

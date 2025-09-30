@@ -69,8 +69,8 @@ export default function Podium() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-6">
-      <div className="text-center mb-8">
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="text-center mb-2">
         <div className="flex items-center justify-center gap-3 mb-4">
           <h1 className="text-4xl font-bold text-[var(--dark-blue)]">
             ¡Juego Completado!
@@ -80,7 +80,7 @@ export default function Podium() {
 
       <div
         className={clsx(
-          "relative p-8 rounded-2xl border-4 shadow-2xl transition-all duration-500 transform hover:scale-105 w-full max-w-md mb-8",
+          "relative p-8 rounded-2xl border-4 shadow-2xl transition-all duration-500 transform hover:scale-105 w-full max-w-md mb-4",
           getPodiumColors(correctAnswers),
           correctAnswers <= 3 ? "text-white" : "text-gray-800"
         )}
@@ -109,7 +109,7 @@ export default function Podium() {
           </h2>
         </div>
 
-        <div className="text-center text-2xl mb-3">
+        <div className="text-center text-3xl mb-3 font-bold  ">
           Aciertos: {correctAnswers} de {settings.questions}
         </div>
 
