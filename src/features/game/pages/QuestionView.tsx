@@ -163,7 +163,6 @@ export default function QuestionView() {
           <p>Pregunta no disponible</p>
         )}
       </div>
-      );
     </>
   );
 }
