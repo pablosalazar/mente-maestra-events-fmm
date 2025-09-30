@@ -24,6 +24,9 @@ const UserList = lazy(
   () => import("./features/users/pages/user-list/UserList")
 );
 
+// 404 Page
+const NotFound = lazy(() => import("./components/NotFound"));
+
 const authRoutes = [
   {
     element: <AuthLayout />,
@@ -106,6 +109,10 @@ export const router = createBrowserRouter([
   ...authRoutes,
   ...appRoutes,
   ...adminRoutes,
+  {
+    path: "*",
+    element: <NotFound />,
+  },
 ]);
 
 export default router;
